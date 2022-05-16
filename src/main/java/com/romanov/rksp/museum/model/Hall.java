@@ -24,6 +24,8 @@ public class Hall implements Serializable {
     @OneToMany(mappedBy = "hall")
     private Collection<Showpiece> showpieces;
 
+    //cascade ALL may result in bugs: deleting hall
+    // from exhibit may delete the entire exhibit
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "exhibit_id")
     private Exhibit exhibit;

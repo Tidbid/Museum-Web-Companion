@@ -1,5 +1,7 @@
 package com.romanov.rksp.museum.model;
 
+import com.sun.xml.bind.v2.TODO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -19,7 +21,7 @@ public class Showpiece implements Serializable {
     private String descriptionLong;
 
     private String imageUrl;
-
+    //cascade is not OK here mb
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hall_id")
     private Hall hall;
