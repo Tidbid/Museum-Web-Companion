@@ -6,6 +6,7 @@ import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.ExhibitService;
 import com.romanov.rksp.museum.service.HallService;
 import com.romanov.rksp.museum.service.ShowpieceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,20 +16,12 @@ import java.util.Collection;
 import java.util.List;
 
 @Controller
+@RequestMapping("/museum")
+@RequiredArgsConstructor
 public class MuseumController {
     private final ExhibitService exhibitService;
     private final HallService hallService;
     private final ShowpieceService showpieceService;
-
-    @Autowired
-    public MuseumController(ExhibitService exhibitService,
-                            HallService hallService,
-                            ShowpieceService showpieceService
-    ){
-        this.exhibitService = exhibitService;
-        this.hallService = hallService;
-        this.showpieceService = showpieceService;
-    }
 
     @GetMapping
     public String viewIndexPage(Model model) {return "index";}

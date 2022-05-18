@@ -1,22 +1,42 @@
 package com.romanov.rksp.museum.controller;
 
+import com.romanov.rksp.museum.dto.UserRegistrationDto;
 import com.romanov.rksp.museum.model.AppUser;
 import com.romanov.rksp.museum.model.Role;
 import com.romanov.rksp.museum.service.AppUserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
-@RestController
-@RequestMapping("")
+@Controller
+@RequestMapping("/museum/security")
 @RequiredArgsConstructor
 public class AppUserController {
     private final AppUserService appUserService;
+
+    @GetMapping("/user/registration")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new UserRegistrationDto());
+        return "registration";
+    }
+
+    @PostMapping("/user/registration")
+    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
+        appUserService.saveUser(userRegistrationDto);
+        return "redirect:/museum/security/user/registration?success";
+    }
+
+    @GetMapping("/user/login")
+    public String login() {
+        return "login";
+    }
 
     @GetMapping("/user/all")
     public ResponseEntity<List<AppUser>> getUsers() {

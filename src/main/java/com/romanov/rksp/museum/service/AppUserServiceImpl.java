@@ -1,9 +1,11 @@
 package com.romanov.rksp.museum.service;
 
+import com.romanov.rksp.museum.dto.UserRegistrationDto;
 import com.romanov.rksp.museum.model.AppUser;
 import com.romanov.rksp.museum.model.Role;
 import com.romanov.rksp.museum.repository.AppUserRepo;
 import com.romanov.rksp.museum.repository.RoleRepo;
+import com.romanov.rksp.museum.util.RolesToAuthorities;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,8 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-@Service @RequiredArgsConstructor @Transactional @Slf4j
-public class AppUserServiceImpl implements AppUserService, UserDetailsService {
+@Service
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
+public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepo appUserRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
@@ -33,16 +38,26 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService {
         } else {
             log.info("User with username: {} queried and found", username);
         }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new User(user.getUsername(), user.getPassword(), authorities);
+        return new User(
+                user.getUsername(),
+                user.getPassword(),
+                RolesToAuthorities.map(user.getRoles())
+        );
     }
 
+    //add a check for the uniqueness of the username
     @Override
     public AppUser saveUser(AppUser user) {
         log.info("Saving user {} to the database", user.getUsername());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return appUserRepo.save(user);
+    }
+
+    //add a check for the uniqueness of the username
+    @Override
+    public AppUser saveUser(UserRegistrationDto userRegistrationDto) {
+        AppUser user = new AppUser(userRegistrationDto);
+        log.info("Saving a new registered user {} to the database", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return appUserRepo.save(user);
     }
