@@ -11,13 +11,29 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 @SpringBootApplication
 public class MuseumApplication {
 
-	public static void main(String[] args) {
+	public static String IMAGE_DIR;
+	public static String IMAGE_EXH_DIR;
+	public static String IMAGE_SHWP_DIR;
+
+	public static void main(String[] args) throws IOException {
+		IMAGE_DIR = new File(".").getCanonicalPath() + File.separator + "img" + File.separator;
+		IMAGE_EXH_DIR = IMAGE_DIR + "exh/";
+		IMAGE_SHWP_DIR = IMAGE_DIR + "shwp/";
+		File exhImgFile = new File(IMAGE_EXH_DIR), shwpImgFile = new File(IMAGE_SHWP_DIR);
+		if (!exhImgFile.exists()) {
+			exhImgFile.mkdirs();
+		}
+		if (!shwpImgFile.exists()) {
+			shwpImgFile.mkdirs();
+		}
 		SpringApplication.run(MuseumApplication.class, args);
 	}
 
@@ -43,7 +59,7 @@ public class MuseumApplication {
 					null,
 					"test",
 					"test_long",
-					"/content/images/exh/figurine.webp",
+					 "/img/exh/shoes.webp",
 					new ArrayList<>()
 					));
 		};

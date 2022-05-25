@@ -77,13 +77,14 @@ public class MuseumController {
             @ModelAttribute Exhibit exhibit,
             @RequestParam("image") MultipartFile multipartFile
             ) {
+        exhibitService.saveExhibit(exhibit);
         //add check for file type
         //check for applicability to update requests???
         if (exhibit.getImageUrl() == null || exhibit.getImageUrl().isEmpty()) {
-            String imgUrl = imageService.saveExhibitionImage(multipartFile);
+            String imgUrl = imageService.saveExhibitionImage(exhibit.getId(), multipartFile);
             exhibit.setImageUrl(imgUrl);
+            exhibitService.saveExhibit(exhibit);
         }
-        exhibitService.saveExhibit(exhibit);
         return "redirect:/exhibitions";
     }
 
