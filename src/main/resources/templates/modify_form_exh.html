@@ -12,7 +12,11 @@
 <section class="bg-light text-dark text-center">
     <div class="container">
         <h1 class="display-4 text-center pt-1 mb-4"> Укажите данные: </h1>
-        <form action="#" th:action="@{~/exhibitions/save}" th:object="${exhibit}" method = "post">
+        <form th:action="@{~/museum/exhibitions/save}"
+              th:object="${exhibit}"
+              method = "post"
+              enctype="multipart/form-data"
+        >
             <input type="hidden" th:field="*{id}"/>
             <div class="container row justify-content-start m-0 p-0">
                 <p class="col-4 p-0 mb-4">
@@ -23,6 +27,13 @@
                 </p>
             </div>
             <textarea th:field="*{descriptionLong}" placeholder="Полное описание выставки (до 15000 символов)" class="form-control mb-4 col-4"></textarea>
+            <div class = "container custom-file my-4">
+                <label class="row mb-2">Фоновое изображение: </label>
+                <input type="file"
+                       name="image"
+                       class="row"
+                       accept="image/*" />
+            </div>
             <div class="container row justify-content-evenly">
                 <p class="col-3">
                     <label for="date_start">Выставка начинается:</label>

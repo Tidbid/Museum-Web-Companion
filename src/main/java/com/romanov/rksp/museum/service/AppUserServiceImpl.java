@@ -59,7 +59,8 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser user = new AppUser(userRegistrationDto);
         log.info("Saving a new registered user {} to the database", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return appUserRepo.save(user);
+        addRoleToUser(appUserRepo.save(user).getUsername(), "USER_ROLE");
+        return user;
     }
 
     @Override

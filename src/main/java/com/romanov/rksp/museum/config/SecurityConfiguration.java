@@ -45,6 +45,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/museum/security/user/registration**",
                 "/museum/security/user/login**"
                 ).permitAll()
+                //path to static content, configured in app.prop
+                //.antMatchers("/content/**")
+                //.hasAnyAuthority("ADMIN_ROLE", "MANAGER_ROLE")
                 .and()
                 .formLogin()
                 .loginPage("/museum/security/user/login")

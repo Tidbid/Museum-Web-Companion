@@ -5,12 +5,16 @@ import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.ExhibitService;
 import com.romanov.rksp.museum.service.HallService;
+import com.romanov.rksp.museum.service.ImageService;
 import com.romanov.rksp.museum.service.ShowpieceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +26,8 @@ public class MuseumController {
     private final ExhibitService exhibitService;
     private final HallService hallService;
     private final ShowpieceService showpieceService;
+
+    private final ImageService imageService;
 
     @GetMapping
     public String viewIndexPage(Model model) {return "index";}
@@ -67,7 +73,16 @@ public class MuseumController {
     }
 
     @PostMapping("/exhibitions/save")
-    public String saveExhibit(@ModelAttribute Exhibit exhibit) {
+    public String saveExhibit(
+            @ModelAttribute Exhibit exhibit,
+            @RequestParam("image") MultipartFile multipartFile
+            ) {
+        //add check for file type
+        //check for applicability to update requests???
+        if (exhibit.getImageUrl() == null || exhibit.getImageUrl().isEmpty()) {
+            String imgUrl = imageService.saveExhibitionImage(multipartFile);
+            exhibit.setImageUrl(imgUrl);
+        }
         exhibitService.saveExhibit(exhibit);
         return "redirect:/exhibitions";
     }

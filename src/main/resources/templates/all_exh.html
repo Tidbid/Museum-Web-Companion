@@ -35,6 +35,9 @@
         <h1 class="display-4 text-center pt-1 mb-4"> Экспозиции нашего музея: </h1>
         <div class="row justify-content-evenly">
             <div th:each="exhibition : ${exhibitions}" class="col-12 col-md-4 mb-3 d-flex justify-content-center align-items-stretch">
+                <div>
+                    <img th:src="@{${exhibition.getImageUrl()}}" th:alt="${exhibition.getName()}"/>
+                </div>
                 <div class="card">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <h4 class="card-title" th:text="${exhibition.getName()}"></h4>
