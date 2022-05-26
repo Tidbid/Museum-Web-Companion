@@ -40,6 +40,12 @@ public class Exhibit implements Serializable {
     @OneToMany(mappedBy = "exhibit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Hall> halls;
 
+    //stub constructor, used for displaying orphans
+    public Exhibit(String name, Collection<Hall> halls) {
+        this.name = name;
+        this.halls = halls;
+    }
+
     public Long getId() {
         return id;
     }

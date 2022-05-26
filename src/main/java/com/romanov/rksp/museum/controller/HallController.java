@@ -5,10 +5,14 @@ import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.service.HallService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/museum")
 public class HallController {
@@ -20,45 +24,14 @@ public class HallController {
         return "showpieces";
     }
 
-    @GetMapping("/edit/halls/create")
-    public String showNewHallForm(Model model) {
-        model.addAttribute("hall", new Hall());
-        model.addAttribute("head", "Создать");
-        return "modify_form_hall";
-    }
-
-    @GetMapping("/edit/halls/update")
-    public String updateHall(@RequestParam Long hall_id, Model model) {
-        Hall hall = hallService.findHallById(hall_id);
-        model.addAttribute("hall", hall);
-        model.addAttribute("head", "Изменить");
-        return "modify_form_hall";
-    }
-
-    //handles one hall, hence /solo
-    //to this link form in the "modify_form_hall" should point
-    @PostMapping("/edit/halls/save/solo")
-    public String saveHall(@ModelAttribute Hall hall) {
-        hallService.saveHall(hall);
-        //exh id may be null
-        return "redirect:/museum/halls?exh_id=" + hall.getExhibit().getId().toString();
-    }
-
-    //handles assigning a bunch of halls to an exhibition,
-    //hence /batch
-    //to this link form in the "select_halls_for_exh" should point
-    @PostMapping("/edit/halls/save/batch")
-    public String assignHalls(@ModelAttribute("exhibitHallsDto") ExhibitHallsDto exhibitHallsDto) {
-        hallService.assignHalls(exhibitHallsDto.getExhibit(), exhibitHallsDto.getHallsToAdd());
-        return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibitHallsDto.getExhibit().getId().toString();
-    }
-
-    @GetMapping("/edit/halls/delete")
-    public String deleteHall(@RequestParam Long hall_id, Model model){
-        //may be null
-        Long exh_id = hallService.findHallById(hall_id).getExhibit().getId();
-        hallService.deleteHallById(hall_id);
-        //TODO if null redirect to the page with halls that have no exhibition?
-        return (exh_id == null) ? "redirect:/museum" : "redirect:/museum/browse/exhibitions/halls?exh_id=" + exh_id;
+    @GetMapping("/browse/halls/orphans")
+    public String viewOrphanHalls(Model model) {
+        //Using the same view that
+        //displays halls of an exhibit
+        //but here we display halls with
+        //no exhibit assigned
+        Exhibit stub = new Exhibit("Свободные Залы:", hallService.findVacantHalls());
+        model.addAttribute("exhibit", stub);
+        return "halls";
     }
 }

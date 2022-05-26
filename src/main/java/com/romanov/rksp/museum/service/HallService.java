@@ -7,6 +7,8 @@ import com.romanov.rksp.museum.repository.HallRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -34,9 +36,20 @@ public class HallService {
         hallRepo.deleteById(hall_id);
     }
 
-    public void assignHalls(Exhibit exhibit, List<Hall> hallsToAdd) {
+    public void assignExhibit(Exhibit exhibit, List<Hall> hallsToAdd) {
         for (Hall hall : hallsToAdd) {
             hall.setExhibit(exhibit);
+            hallRepo.save(hall);
+        }
+    }
+    public void makeOrphan(Collection<Hall> poorOrphans) {
+        for (Hall hall : poorOrphans) {
+            hall.setExhibit(null);
+            //TODO look into JPA more closely
+            // this entity should be persisted
+            // but the session does not flush and
+            // changes are not committed without this save
+            // (should remove it but don't care to rn)
             hallRepo.save(hall);
         }
     }

@@ -33,6 +33,12 @@ public class Hall implements Serializable {
     @JoinColumn(name = "exhibit_id")
     private Exhibit exhibit;
 
+    //stub constructor, used for displaying orphans
+    public Hall(String name, Collection<Showpiece> showpieces) {
+        this.name = name;
+        this.showpieces = showpieces;
+    }
+
     public void setNumber(Integer number) {
         this.number = number;
     }

@@ -11,11 +11,11 @@
 <section class="bg-light text-dark text-center">
     <div class="container">
         <h1 class="display-4 text-center pt-1 mb-4"> Укажите данные: </h1>
-        <form th:action="@{~/museum/edit/halls/save/solo}"
-              th:object="${hall}"
+        <form th:action="@{~/museum/edit/halls/save}"
+              th:object="${hallShowpiecesDto}"
               method = "post"
         >
-            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{hall.id}" th:value="${hallShowpiecesDto.getHall().getId()}"/>
             <div class="container row justify-content-start m-0 p-0">
                 <p class="col-3 p-0 mb-4">
                     <label for="numberInput" class="form-label">
@@ -24,7 +24,7 @@
                     <input id = "numberInput"
                            type="number"
                            min="1"
-                           th:field="*{number}"
+                           th:field="*{hall.number}"
                            placeholder="Введите целое положительное число"
                            class="form-control"/>
                 </p>
@@ -34,7 +34,7 @@
                     </label>
                     <input id = "nameInput"
                            type="text"
-                           th:field="*{name}"
+                           th:field="*{hall.name}"
                            placeholder="Введите название зала, отражающее его смысл и наполнение"
                            class="form-control"/>
                 </p>
@@ -43,7 +43,7 @@
                 Краткое описание:
             </label>
             <textarea id = "descInput"
-                      th:field="*{description}"
+                      th:field="*{hall.description}"
                       maxlength="1000"
                       placeholder="Введите краткое описание зала (до 1000 символов)"
                       class="form-control mb-4 col-4"></textarea>
@@ -51,10 +51,46 @@
                 Полное описание:
             </label>
             <textarea id = "descLongInput"
-                      th:field="*{descriptionLong}"
+                      th:field="*{hall.descriptionLong}"
                       maxlength="15000"
                       placeholder="Введите полное описание зала (до 15000 символов)"
                       class="form-control mb-4 col-4"></textarea>
+            <p class="text-center form-label fw-bold fst-italic my-3">
+                Выберите экспонаты, которые будут находиться в этом зале:
+            </p>
+            <table class="table table-bordered mb-4">
+                <thead>
+                <tr>
+                    <th scope="col">Название</th>
+                    <th scope="col">Краткое описание</th>
+                    <th scope="col">Выбрать</th>
+                </tr>
+                </thead>
+                <tbody class="text-start">
+                <tr th:each="showpiece:${hallShowpiecesDto.getHall().getShowpieces()}">
+                    <td th:text="${showpiece.getName()}"></td>
+                    <td th:text="${showpiece.getDescription()}"></td>
+                    <td class="text-center">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               th:value="${showpiece.getId()}"
+                               th:field="*{showpiecesToAdd}"
+                               checked/>
+                    </td>
+                </tr>
+                <tr th:each="showpiece:${vacantShowpieces}">
+                    <td th:text="${showpiece.getName()}"></td>
+                    <td th:text="${showpiece.getDescription()}"></td>
+                    <td class="text-center">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               th:value="${showpiece.getId()}"
+                               th:field="*{showpiecesToAdd}"
+                               />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             <div class="container row justify-content-evenly">
                 <button type="submit" class="btn btn-success btn-lg col-2 align-self-center">Сохранить</button>
                 <a th:href="@{~/exhibitions}" class="btn btn-danger btn-lg col-2 align-self-center">Отменить</a>

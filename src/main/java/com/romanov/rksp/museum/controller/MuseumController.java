@@ -1,6 +1,7 @@
 package com.romanov.rksp.museum.controller;
 
 import com.romanov.rksp.museum.dto.ExhibitHallsDto;
+import com.romanov.rksp.museum.dto.HallShowpiecesDto;
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.model.Showpiece;
@@ -47,8 +48,14 @@ public class MuseumController {
         return "modify_form_exh";
     }
 
-    //TODO display image that is currently assigned to exh
-    // on this page
+    @GetMapping("/edit/halls/create")
+    public String showNewHallForm(Model model) {
+        model.addAttribute("hallShowpiecesDto", new HallShowpiecesDto(new Hall(), new ArrayList<>()));
+        model.addAttribute("vacantShowpieces", showpieceService.findVacantShowpieces());
+        model.addAttribute("head", "Создать");
+        return "modify_form_hall";
+    }
+
     @GetMapping("/edit/exhibitions/update")
     public String updateExhibit(@RequestParam Long exh_id, Model model) {
         Exhibit exhibit = exhibitService.findExhibitById(exh_id);
@@ -59,6 +66,24 @@ public class MuseumController {
         return "modify_form_exh";
     }
 
+    @GetMapping("/edit/halls/update")
+    public String updateHall(@RequestParam Long hall_id, Model model) {
+        Hall hall = hallService.findHallById(hall_id);
+        model.addAttribute("hallShowpiecesDto",
+                new HallShowpiecesDto(hall, (List<Showpiece>) hall.getShowpieces()));
+        model.addAttribute("vacantShowpieces", showpieceService.findVacantShowpieces());
+        model.addAttribute("head", "Изменить");
+        return "modify_form_hall";
+    }
+
+    @PostMapping("/edit/halls/save")
+    public String saveHall(@ModelAttribute HallShowpiecesDto hallShowpiecesDto) {
+        Hall hall = hallShowpiecesDto.getHall();
+        hallService.saveHall(hall);
+        showpieceService.assignHall(hall, hallShowpiecesDto.getShowpiecesToAdd());
+        return "redirect:/museum/browse/halls/showpieces?hall_id=" + hall.getId().toString();
+    }
+
     @PostMapping("/edit/exhibitions/save")
     public String saveExhibit(
             @ModelAttribute("exhibitHallsDto") ExhibitHallsDto exhibitHallsDto,
@@ -66,17 +91,16 @@ public class MuseumController {
     ) {
         Exhibit exhibit = exhibitHallsDto.getExhibit();
         exhibitService.saveExhibit(exhibit);
-        hallService.assignHalls(exhibit, exhibitHallsDto.getHallsToAdd());
+        hallService.assignExhibit(exhibit, exhibitHallsDto.getHallsToAdd());
         String imgUrl = imageService.saveExhibitionImage(exhibit, multipartFile);
         exhibit.setImageUrl(imgUrl);
         //TODO look into JPA more closely
         // this entity should be persisted
-        // but session does not flush and
+        // but the session does not flush and
         // changes are not committed without this save
         // (should remove it but don't care to rn)
         exhibitService.saveExhibit(exhibit);
-        //TODO dead redirect
-        return "redirect:/exhibitions";
+        return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
     }
 
     @GetMapping
@@ -101,15 +125,28 @@ public class MuseumController {
         return "showpieces";
     }
 
-    @GetMapping("/exhibitions/halls/showpieces/more")
-    public String viewShowpieceMore(@RequestParam Long showp_id, Model model) {
-        model.addAttribute("showpiece", showpieceService.findShowpieceById(showp_id));
-        return "showpiece_more";
-    }
-
     @GetMapping("/edit/exhibitions/delete")
     public String deleteExhibit(@RequestParam Long exh_id, Model model){
+        //TODO supplant this inefficient garbage with
+        // ADD CONSTRAINT ON DELETE SET NULL
+        // in the database
+        hallService.makeOrphan(exhibitService.findExhibitById(exh_id).getHalls());
+        //TODO delete images, since they will clog
         exhibitService.deleteExhibitById(exh_id);
         return "redirect:/exhibitions";
+    }
+
+    @GetMapping("/edit/halls/delete")
+    public String deleteHall(@RequestParam Long hall_id, Model model){
+        Hall hall = hallService.findHallById(hall_id);
+        Long exh_id = hall.getId();
+        String ret = "redirect:/museum/browse/";
+        ret += (exh_id == null) ? "halls/orphans" : "exhibitions/halls?exh_id=" + exh_id;
+        //TODO supplant this inefficient garbage with
+        // ADD CONSTRAINT ON DELETE SET NULL
+        // in the database
+        showpieceService.makeOrphan(hall.getShowpieces());
+        hallService.deleteHallById(hall_id);
+        return ret;
     }
 }
