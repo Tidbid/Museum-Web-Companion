@@ -1,5 +1,7 @@
 package com.romanov.rksp.museum.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Exhibit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +35,15 @@ public class Exhibit implements Serializable {
     @Column(name="description_long", length=15000)
     private String descriptionLong;
 
-    @OneToMany(mappedBy = "exhibit")
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "exhibit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Hall> halls;
 
-    public Exhibit() {
+    //stub constructor, used for displaying orphans
+    public Exhibit(String name, Collection<Hall> halls) {
+        this.name = name;
+        this.halls = halls;
     }
 
     public Long getId() {
@@ -65,6 +74,10 @@ public class Exhibit implements Serializable {
         return dateFinish;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -91,5 +104,9 @@ public class Exhibit implements Serializable {
 
     public void setDateFinish(LocalDate dateFinish) {
         this.dateFinish = dateFinish;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

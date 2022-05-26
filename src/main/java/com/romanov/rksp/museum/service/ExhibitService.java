@@ -1,9 +1,11 @@
 package com.romanov.rksp.museum.service;
 
 import com.romanov.rksp.museum.model.Exhibit;
+import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.repository.ExhibitRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.ListUtils;
 
 import java.util.List;
 import java.util.Optional;

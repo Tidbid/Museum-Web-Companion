@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+Inserting dto ExhibitHallsDto -> Exhibit (exhibit field, needs to be already specified in
+the controller) and list of Halls (hallsToAdd field which is currently empty)
+Also inserting vacantHalls -> list of halls with exh_id == null
+Need to check certain vacantHalls and pass checked ones into hallToAdd
+-->
+<form class="ui form" th:action="@{~/museum/edit/test/save/batch}" th:object="${exhibitHallsDto}" method="post">
+    <input type="hidden" th:field="*{exhibit}" th:value="${exhibitHallsDto.getExhibit().getId()}"/>
+    <ul>
+        <li th:each="hall:${vacantHalls}">
+            <div class="ui checkbox">
+                <input type="checkbox" name="halls" th:value="${hall.getId()}" th:field="*{hallsToAdd}" />
+                <label th:text="${hall.getName()}"></label>
+            </div>
+        </li>
+    </ul>
+    <div class = "field">
+        <button class="ui button" type="submit">Submit</button>
+    </div>
+</form>
+
+</body>
+</html>
