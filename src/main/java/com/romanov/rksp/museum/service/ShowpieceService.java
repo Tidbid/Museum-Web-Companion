@@ -48,4 +48,8 @@ public class ShowpieceService {
             showpieceRepo.save(showpiece);
         }
     }
+
+    public void deleteShowpieceById(Long shwp_id) {
+        showpieceRepo.deleteById(shwp_id);
+    }
 }

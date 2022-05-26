@@ -160,6 +160,17 @@ public class MuseumController {
         return "showpieces";
     }
 
+    @GetMapping("/edit/showpieces/delete")
+    public String deleteShowpiece(@RequestParam Long shwp_id, Model model){
+        Showpiece showpiece = showpieceService.findShowpieceById(shwp_id);
+        String ret = "redirect:/museum/browse/";
+        ret += (showpiece.getHall() == null) ?
+                "showpieces/orphans" : "/halls/showpieces?hall_id=" + showpiece.getHall().getId();
+        //TODO delete images, since they will clog
+        showpieceService.deleteShowpieceById(shwp_id);
+        return ret;
+    }
+
     @GetMapping("/edit/exhibitions/delete")
     public String deleteExhibit(@RequestParam Long exh_id, Model model){
         //TODO supplant this inefficient garbage with
@@ -174,9 +185,9 @@ public class MuseumController {
     @GetMapping("/edit/halls/delete")
     public String deleteHall(@RequestParam Long hall_id, Model model){
         Hall hall = hallService.findHallById(hall_id);
-        Long exh_id = hall.getId();
         String ret = "redirect:/museum/browse/";
-        ret += (exh_id == null) ? "halls/orphans" : "exhibitions/halls?exh_id=" + exh_id;
+        ret += (hall.getExhibit() == null) ?
+                "halls/orphans" : "exhibitions/halls?exh_id=" + hall.getExhibit().getId();
         //TODO supplant this inefficient garbage with
         // ADD CONSTRAINT ON DELETE SET NULL
         // in the database
