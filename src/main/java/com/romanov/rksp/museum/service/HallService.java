@@ -22,7 +22,22 @@ public class HallService {
         return hallRepo.findHallById(hallId);
     }
 
+    public List<Hall> findVacantHalls() {
+        return hallRepo.findVacantHalls();
+    }
+
     public Hall saveHall(Hall hall) {
         return hallRepo.save(hall);
+    }
+
+    public void deleteHallById(Long hall_id) {
+        hallRepo.deleteById(hall_id);
+    }
+
+    public void assignHalls(Exhibit exhibit, List<Hall> hallsToAdd) {
+        for (Hall hall : hallsToAdd) {
+            hall.setExhibit(exhibit);
+            hallRepo.save(hall);
+        }
     }
 }

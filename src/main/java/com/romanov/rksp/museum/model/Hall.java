@@ -1,10 +1,15 @@
 package com.romanov.rksp.museum.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Hall implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +31,7 @@ public class Hall implements Serializable {
 
     //cascade ALL may result in bugs: deleting hall
     // from exhibit may delete the entire exhibit
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "exhibit_id")
     private Exhibit exhibit;
 

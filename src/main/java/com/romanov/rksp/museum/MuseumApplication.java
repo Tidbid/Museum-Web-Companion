@@ -1,10 +1,10 @@
 package com.romanov.rksp.museum;
 
-import com.romanov.rksp.museum.model.AppUser;
-import com.romanov.rksp.museum.model.Exhibit;
-import com.romanov.rksp.museum.model.Role;
+import com.romanov.rksp.museum.model.*;
 import com.romanov.rksp.museum.service.AppUserService;
 import com.romanov.rksp.museum.service.ExhibitService;
+import com.romanov.rksp.museum.service.HallService;
+import com.romanov.rksp.museum.service.ShowpieceService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,7 +38,10 @@ public class MuseumApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(AppUserService appUserService, ExhibitService exhibitService) {
+	CommandLineRunner run(AppUserService appUserService,
+						  ExhibitService exhibitService,
+						  HallService hallService,
+						  ShowpieceService showpieceService) {
 		return args -> {
 			appUserService.saveRole(new Role(null, "USER_ROLE"));
 			appUserService.saveRole(new Role(null, "MANAGER_ROLE"));
@@ -52,16 +55,44 @@ public class MuseumApplication {
 			appUserService.addRoleToUser("Adam@Smith", "USER_ROLE");
 			appUserService.addRoleToUser("Apple@Green", "MANAGER_ROLE");
 			appUserService.addRoleToUser("Drive@Lorry", "ADMIN_ROLE");
-			exhibitService.saveExhibit(new Exhibit(
+			Exhibit exh = new Exhibit(
 					null,
 					"test",
 					LocalDate.now(),
 					null,
 					"test",
 					"test_long",
-					 "/img/exh/shoes.webp",
+					"/img/exh/shoes.webp",
 					new ArrayList<>()
-					));
+			);
+			exhibitService.saveExhibit(exh);
+			hallService.saveHall(new Hall(
+					null,
+					1,
+					"First test hall",
+					"My very first hall",
+					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
+					new ArrayList<>(),
+					null
+			));
+			hallService.saveHall(new Hall(
+					null,
+					2,
+					"Second test hall",
+					"My very second hall",
+					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
+					new ArrayList<>(),
+					null
+			));
+			hallService.saveHall(new Hall(
+					null,
+					3,
+					"Third test hall",
+					"My very third hall",
+					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
+					new ArrayList<>(),
+					exh
+			));
 		};
 	}
 

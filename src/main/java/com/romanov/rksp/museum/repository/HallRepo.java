@@ -11,8 +11,14 @@ public interface HallRepo extends JpaRepository<Hall, Long> {
     Hall findHallById(Long hallId);
 
     @Query(
-            value = "SELECT * FROM hall WHERE exhibit_id =: exh_id;",
+            value = "SELECT * FROM hall WHERE exhibit_id = :exh_id;",
             nativeQuery = true
     )
     List<Hall> findHallByExhibitId(@Param("exh_id") Long exh_id);
+
+    @Query(
+            value = "SELECT * FROM hall WHERE exhibit_id IS NULL;",
+            nativeQuery = true
+    )
+    List<Hall> findVacantHalls();
 }

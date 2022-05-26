@@ -8,5 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ExhibitController {
     private final ExhibitService exhibitService;
-
 }

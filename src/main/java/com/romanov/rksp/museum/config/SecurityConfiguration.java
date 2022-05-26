@@ -40,14 +40,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //.hasRole("...") doesn't work
+                .antMatchers("/museum/edit/**").hasAnyAuthority("MANAGER_ROLE", "ADMIN_ROLE")
                 .antMatchers("/museum/security/user/all").hasAuthority("ADMIN_ROLE")
                 .antMatchers(
+                        "museum/browse/**",
                 "/museum/security/user/registration**",
                 "/museum/security/user/login**"
                 ).permitAll()
-                //path to static content, configured in app.prop
-                //.antMatchers("/content/**")
-                //.hasAnyAuthority("ADMIN_ROLE", "MANAGER_ROLE")
                 .and()
                 .formLogin()
                 .loginPage("/museum/security/user/login")

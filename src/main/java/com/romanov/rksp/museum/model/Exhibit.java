@@ -1,6 +1,7 @@
 package com.romanov.rksp.museum.model;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Exhibit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +37,8 @@ public class Exhibit implements Serializable {
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "exhibit")
+    @OneToMany(mappedBy = "exhibit", cascade = CascadeType.ALL)
     private Collection<Hall> halls;
-
-    public Exhibit() {
-    }
 
     public Long getId() {
         return id;

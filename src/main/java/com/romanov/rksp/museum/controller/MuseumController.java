@@ -1,5 +1,6 @@
 package com.romanov.rksp.museum.controller;
 
+import com.romanov.rksp.museum.dto.ExhibitHallsDto;
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.model.Showpiece;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,6 +31,21 @@ public class MuseumController {
 
     private final ImageService imageService;
 
+    @GetMapping("/edit/test")
+    public String selectHalls(@RequestParam Long exh_id, Model model) {
+        Exhibit exh = exhibitService.findExhibitById(exh_id);
+        model.addAttribute("exhibitHallsDto", new ExhibitHallsDto(exh, new ArrayList<>()));
+        model.addAttribute("vacantHalls", hallService.findVacantHalls());
+        return "select_halls_for_exh";
+    }
+
+    @PostMapping("/edit/test/save")
+    public String assignHalls(@ModelAttribute("exhibitHallsDto") ExhibitHallsDto exhibitHallsDto) {
+        exhibitService.addHalls(exhibitHallsDto.getExhibit(), exhibitHallsDto.getHallsToAdd());
+        hallService.assignHalls(exhibitHallsDto.getExhibit(), exhibitHallsDto.getHallsToAdd());
+        return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibitHallsDto.getExhibit().getId().toString();
+    }
+
     @GetMapping
     public String viewIndexPage(Model model) {return "index";}
 
@@ -39,7 +56,7 @@ public class MuseumController {
         return "all_exh";
     }
 
-    @GetMapping("/exhibitions/halls")
+    @GetMapping("/browse/exhibitions/halls")
     public String viewHalls(@RequestParam Long exh_id, Model model) {
         model.addAttribute("exhibit", exhibitService.findExhibitById(exh_id));
         return "halls";
@@ -57,14 +74,14 @@ public class MuseumController {
         return "showpiece_more";
     }
 
-    @GetMapping("/exhibitions/create")
+    @GetMapping("/edit/exhibitions/create")
     public String showNewExhibitForm(Model model) {
         model.addAttribute("exhibit", new Exhibit());
         model.addAttribute("head", "Создать");
         return "modify_form_exh";
     }
 
-    @GetMapping("/exhibitions/update")
+    @GetMapping("/edit/exhibitions/update")
     public String updateExhibit(@RequestParam Long exh_id, Model model) {
         Exhibit exhibit = exhibitService.findExhibitById(exh_id);
         model.addAttribute("exhibit", exhibit);
@@ -72,7 +89,7 @@ public class MuseumController {
         return "modify_form_exh";
     }
 
-    @PostMapping("/exhibitions/save")
+    @PostMapping("/edit/exhibitions/save")
     public String saveExhibit(
             @ModelAttribute Exhibit exhibit,
             @RequestParam("image") MultipartFile multipartFile
@@ -88,7 +105,7 @@ public class MuseumController {
         return "redirect:/exhibitions";
     }
 
-    @GetMapping("/exhibitions/delete")
+    @GetMapping("/edit/exhibitions/delete")
     public String deleteExhibit(@RequestParam Long exh_id, Model model){
         exhibitService.deleteExhibitById(exh_id);
         return "redirect:/exhibitions";
