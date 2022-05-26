@@ -34,7 +34,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    //TODO looks ugly, change it. mb doesn't even work
+    //TODO looks ugly, change it. does work though
     public String saveExhibitionImage(Exhibit exhibit, MultipartFile exhImg) {
         String retUrl;
         if (exhImg.isEmpty() && exhibit.getImageUrl() == null) {
@@ -67,8 +67,36 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    //TODO looks ugly, change it. mb doesn't even work
     public String saveShowpieceImage(Showpiece showpiece, MultipartFile showpieceImg) {
-        return null;
+        String retUrl;
+        if (showpieceImg.isEmpty() && showpiece.getImageUrl() == null) {
+            //user decided not to choose an image
+            log.info("Assigning default image to showpiece: {}", showpiece.getName());
+            return getDefaultShowpieceImage();
+        } else if (showpieceImg.isEmpty()) {
+            //user did not change the image
+            return showpiece.getImageUrl();
+        } else {
+            try {
+                String fileName =
+                        StringUtils.cleanPath(Objects.requireNonNull(showpieceImg.getOriginalFilename()));
+                String[] parts = fileName.split("[.]");
+                fileName = showpiece.getId().toString() + "." + parts[parts.length - 1];
+                byte[] bytes = showpieceImg.getBytes();
+                Path path =
+                        Paths.get(MuseumApplication.IMAGE_SHWP_DIR + fileName);
+                Files.write(path, bytes);
+                retUrl = contentUrl + shwpDir + fileName;
+            } catch (Exception e) {
+                log.error("Failed to assign new image to showpiece: {}.  With error message: {}",
+                        showpiece.getName(),
+                        e.getMessage());
+                //if no image then default, else keep
+                retUrl = (showpiece.getImageUrl() == null) ? getDefaultShowpieceImage() : showpiece.getImageUrl();
+            }
+        }
+        return retUrl;
     }
 
     @Override

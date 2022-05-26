@@ -16,8 +16,8 @@ public class ShowpieceController {
     private final ShowpieceService showpieceService;
 
     @GetMapping("/browse/showpieces/more")
-    public String viewShowpieceMore(@RequestParam Long showp_id, Model model) {
-        model.addAttribute("showpiece", showpieceService.findShowpieceById(showp_id));
+    public String viewShowpieceMore(@RequestParam Long shwp_id, Model model) {
+        model.addAttribute("showpiece", showpieceService.findShowpieceById(shwp_id));
         return "showpiece_more";
     }
 

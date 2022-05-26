@@ -48,12 +48,22 @@ public class MuseumController {
         return "modify_form_exh";
     }
 
+    //TODO add field that will
+    // allow manager to specify an exhibit
+    // from this view
     @GetMapping("/edit/halls/create")
     public String showNewHallForm(Model model) {
         model.addAttribute("hallShowpiecesDto", new HallShowpiecesDto(new Hall(), new ArrayList<>()));
         model.addAttribute("vacantShowpieces", showpieceService.findVacantShowpieces());
         model.addAttribute("head", "Создать");
         return "modify_form_hall";
+    }
+
+    @GetMapping("/edit/showpieces/create")
+    public String showNewShowpieceForm(Model model) {
+        model.addAttribute("showpiece", new Showpiece());
+        model.addAttribute("head", "Создать");
+        return "modify_form_shwp";
     }
 
     @GetMapping("/edit/exhibitions/update")
@@ -64,6 +74,14 @@ public class MuseumController {
         model.addAttribute("vacantHalls", hallService.findVacantHalls());
         model.addAttribute("head", "Изменить");
         return "modify_form_exh";
+    }
+
+    @GetMapping("/edit/showpieces/update")
+    public String updateShowpiece(@RequestParam Long shwp_id, Model model) {
+        Showpiece showpiece = showpieceService.findShowpieceById(shwp_id);
+        model.addAttribute("showpiece", showpiece);
+        model.addAttribute("head", "Изменить");
+        return "modify_form_shwp";
     }
 
     @GetMapping("/edit/halls/update")
@@ -101,6 +119,23 @@ public class MuseumController {
         // (should remove it but don't care to rn)
         exhibitService.saveExhibit(exhibit);
         return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
+    }
+
+    @PostMapping("/edit/showpieces/save")
+    public String saveShowpiece(
+            @ModelAttribute("showpiece") Showpiece showpiece,
+            @RequestParam("image") MultipartFile multipartFile
+    ) {
+        showpieceService.saveShowpiece(showpiece);
+        String imgUrl = imageService.saveShowpieceImage(showpiece, multipartFile);
+        showpiece.setImageUrl(imgUrl);
+        //TODO look into JPA more closely
+        // this entity should be persisted
+        // but the session does not flush and
+        // changes are not committed without this save
+        // (should remove it but don't care to rn)
+        showpieceService.saveShowpiece(showpiece);
+        return "redirect:/museum/browse/showpieces/more?shwp_id=" + showpiece.getId().toString();
     }
 
     @GetMapping

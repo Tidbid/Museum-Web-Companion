@@ -66,7 +66,7 @@ public class MuseumApplication {
 					new ArrayList<>()
 			);
 			exhibitService.saveExhibit(exh);
-			hallService.saveHall(new Hall(
+			Hall hall = new Hall(
 					null,
 					1,
 					"First test hall",
@@ -82,8 +82,8 @@ public class MuseumApplication {
 							"Id soleat aliquip blandit pri, est ad essent.",
 					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
 					new ArrayList<>(),
-					null
-			));
+					null);
+			hallService.saveHall(hall);
 			hallService.saveHall(new Hall(
 					null,
 					2,
@@ -112,6 +112,33 @@ public class MuseumApplication {
 					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
 					new ArrayList<>(),
 					exh
+			));
+			showpieceService.saveShowpiece(new Showpiece(
+					null,
+					"Мумия древнего Египтянина",
+					"Крайне интересная мумия, крайне древняя и крайне интересная. " +
+							"Крайне интересная мумия, крайне древняя и крайне интересная.",
+					"Длинное описание мумии",
+					null,
+					hall
+			));
+			showpieceService.saveShowpiece(new Showpiece(
+					null,
+					"Мумия древнего Самаритянина",
+					"Крайне интересная мумия, крайне древняя и крайне интересная. " +
+							"Крайне интересная мумия, крайне древняя и крайне интересная.",
+					"Длинное описание мумии",
+					null,
+					null
+			));
+			showpieceService.saveShowpiece(new Showpiece(
+					null,
+					"Картина сумасшедшего художника",
+					"Крайне интересная картина, крайне древняя и крайне интересная. " +
+							"Крайне интересная Картина, крайне древняя и крайне интересная.",
+					"Длинное описание Картины",
+					null,
+					null
 			));
 		};
 	}
