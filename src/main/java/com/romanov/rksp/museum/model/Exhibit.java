@@ -37,7 +37,7 @@ public class Exhibit implements Serializable {
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "exhibit", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exhibit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Hall> halls;
 
     public Long getId() {

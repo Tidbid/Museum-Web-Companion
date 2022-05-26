@@ -34,9 +34,4 @@ public class ExhibitService {
     public void deleteExhibitById(Long id) {
         exhibitRepo.deleteById(id);
     }
-
-    public Exhibit addHalls(Exhibit exhibit, List<Hall> halls) {
-        exhibit.getHalls().addAll(halls);
-        return exhibitRepo.save(exhibit);
-    }
 }

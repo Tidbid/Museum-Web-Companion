@@ -11,7 +11,7 @@ the controller) and list of Halls (hallsToAdd field which is currently empty)
 Also inserting vacantHalls -> list of halls with exh_id == null
 Need to check certain vacantHalls and pass checked ones into hallToAdd
 -->
-<form class="ui form" th:action="@{~/museum/edit/test/save}" th:object="${exhibitHallsDto}" method="post">
+<form class="ui form" th:action="@{~/museum/edit/test/save/batch}" th:object="${exhibitHallsDto}" method="post">
     <input type="hidden" th:field="*{exhibit}" th:value="${exhibitHallsDto.getExhibit().getId()}"/>
     <ul>
         <li th:each="hall:${vacantHalls}">

@@ -39,17 +39,50 @@ public class MuseumController {
         return "select_halls_for_exh";
     }
 
-    @PostMapping("/edit/test/save")
-    public String assignHalls(@ModelAttribute("exhibitHallsDto") ExhibitHallsDto exhibitHallsDto) {
-        exhibitService.addHalls(exhibitHallsDto.getExhibit(), exhibitHallsDto.getHallsToAdd());
-        hallService.assignHalls(exhibitHallsDto.getExhibit(), exhibitHallsDto.getHallsToAdd());
-        return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibitHallsDto.getExhibit().getId().toString();
+    @GetMapping("/edit/exhibitions/create")
+    public String showNewExhibitForm(Model model) {
+        model.addAttribute("exhibitHallsDto", new ExhibitHallsDto(new Exhibit(), new ArrayList<>()));
+        model.addAttribute("vacantHalls", hallService.findVacantHalls());
+        model.addAttribute("head", "Создать");
+        return "modify_form_exh";
+    }
+
+    //TODO display image that is currently assigned to exh
+    // on this page
+    @GetMapping("/edit/exhibitions/update")
+    public String updateExhibit(@RequestParam Long exh_id, Model model) {
+        Exhibit exhibit = exhibitService.findExhibitById(exh_id);
+        model.addAttribute("exhibitHallsDto",
+                new ExhibitHallsDto(exhibit, (List<Hall>) exhibit.getHalls()));
+        model.addAttribute("vacantHalls", hallService.findVacantHalls());
+        model.addAttribute("head", "Изменить");
+        return "modify_form_exh";
+    }
+
+    @PostMapping("/edit/exhibitions/save")
+    public String saveExhibit(
+            @ModelAttribute("exhibitHallsDto") ExhibitHallsDto exhibitHallsDto,
+            @RequestParam("image") MultipartFile multipartFile
+    ) {
+        Exhibit exhibit = exhibitHallsDto.getExhibit();
+        exhibitService.saveExhibit(exhibit);
+        hallService.assignHalls(exhibit, exhibitHallsDto.getHallsToAdd());
+        String imgUrl = imageService.saveExhibitionImage(exhibit, multipartFile);
+        exhibit.setImageUrl(imgUrl);
+        //TODO look into JPA more closely
+        // this entity should be persisted
+        // but session does not flush and
+        // changes are not committed without this save
+        // (should remove it but don't care to rn)
+        exhibitService.saveExhibit(exhibit);
+        //TODO dead redirect
+        return "redirect:/exhibitions";
     }
 
     @GetMapping
     public String viewIndexPage(Model model) {return "index";}
 
-    @GetMapping("/exhibitions")
+    @GetMapping("/browse/exhibitions")
     public String viewExhibitions(Model model) {
         List<Exhibit> exhibitionsList = this.exhibitService.findAllExhibits();
         model.addAttribute("exhibitions", exhibitionsList);
@@ -72,37 +105,6 @@ public class MuseumController {
     public String viewShowpieceMore(@RequestParam Long showp_id, Model model) {
         model.addAttribute("showpiece", showpieceService.findShowpieceById(showp_id));
         return "showpiece_more";
-    }
-
-    @GetMapping("/edit/exhibitions/create")
-    public String showNewExhibitForm(Model model) {
-        model.addAttribute("exhibit", new Exhibit());
-        model.addAttribute("head", "Создать");
-        return "modify_form_exh";
-    }
-
-    @GetMapping("/edit/exhibitions/update")
-    public String updateExhibit(@RequestParam Long exh_id, Model model) {
-        Exhibit exhibit = exhibitService.findExhibitById(exh_id);
-        model.addAttribute("exhibit", exhibit);
-        model.addAttribute("head", "Изменить");
-        return "modify_form_exh";
-    }
-
-    @PostMapping("/edit/exhibitions/save")
-    public String saveExhibit(
-            @ModelAttribute Exhibit exhibit,
-            @RequestParam("image") MultipartFile multipartFile
-            ) {
-        exhibitService.saveExhibit(exhibit);
-        //add check for file type
-        //check for applicability to update requests???
-        if (exhibit.getImageUrl() == null || exhibit.getImageUrl().isEmpty()) {
-            String imgUrl = imageService.saveExhibitionImage(exhibit.getId(), multipartFile);
-            exhibit.setImageUrl(imgUrl);
-            exhibitService.saveExhibit(exhibit);
-        }
-        return "redirect:/exhibitions";
     }
 
     @GetMapping("/edit/exhibitions/delete")

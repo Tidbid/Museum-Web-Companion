@@ -20,17 +20,15 @@ public class Hall implements Serializable {
 
     private String name;
 
-    @Column(nullable = false, length=15000)
+    @Column(nullable = false, length=1000)
     private String description;
 
     @Column(name="description_long", length=15000)
     private String descriptionLong;
 
-    @OneToMany(mappedBy = "hall")
+    @OneToMany(mappedBy = "hall", fetch = FetchType.LAZY)
     private Collection<Showpiece> showpieces;
 
-    //cascade ALL may result in bugs: deleting hall
-    // from exhibit may delete the entire exhibit
     @ManyToOne()
     @JoinColumn(name = "exhibit_id")
     private Exhibit exhibit;

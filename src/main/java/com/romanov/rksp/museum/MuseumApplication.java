@@ -70,7 +70,16 @@ public class MuseumApplication {
 					null,
 					1,
 					"First test hall",
-					"My very first hall",
+					"Lorem ipsum dolor sit amet, verear ocurreret democritum nam id, " +
+							"lucilius moderatius eu vim. Probo malis accusamus te per, " +
+							"falli altera tamquam eos ne. Quo eu melius corpora postulant, " +
+							"eam ne feugiat legimus tacimates, pri in gubergren splendide. " +
+							"Id dignissim tincidunt maiestatis has, oblique lobortis nec id, te sale iusto mediocrem sit. " +
+							"Id duo debet viris.\n " +
+							"Ius dicta voluptatibus eu, quem lobortis ea cum, unum viderer scriptorem at eam. " +
+							"In nisl oporteat sea, et error sanctus concludaturque mel. " +
+							"Ad meis saperet appetere sed, eum eruditi honestatis no, vis quem affert expetenda an. " +
+							"Id soleat aliquip blandit pri, est ad essent.",
 					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
 					new ArrayList<>(),
 					null
@@ -79,7 +88,9 @@ public class MuseumApplication {
 					null,
 					2,
 					"Second test hall",
-					"My very second hall",
+					"Lorem ipsum dolor sit amet, id mel vocent inermis. Ut facer efficiantur mea, in albucius argumentum sed, eum ei suas solum complectitur. Quo integre nusquam ad, mea utinam bonorum propriae ei, vivendum persequeris eum eu. Error lobortis definitiones ad vis, in has facer scriptorem. Has utroque principes accommodare no.\n" +
+							"\n" +
+							"Eros.",
 					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
 					new ArrayList<>(),
 					null
@@ -88,7 +99,16 @@ public class MuseumApplication {
 					null,
 					3,
 					"Third test hall",
-					"My very third hall",
+					"Lorem ipsum dolor sit amet, verear ocurreret democritum nam id, " +
+							"lucilius moderatius eu vim. Probo malis accusamus te per, " +
+							"falli altera tamquam eos ne. Quo eu melius corpora postulant, " +
+							"eam ne feugiat legimus tacimates, pri in gubergren splendide. " +
+							"Id dignissim tincidunt maiestatis has, oblique lobortis nec id, te sale iusto mediocrem sit. " +
+							"Id duo debet viris.\n " +
+							"Ius dicta voluptatibus eu, quem lobortis ea cum, unum viderer scriptorem at eam. " +
+							"In nisl oporteat sea, et error sanctus concludaturque mel. " +
+							"Ad meis saperet appetere sed, eum eruditi honestatis no, vis quem affert expetenda an. " +
+							"Id soleat aliquip blandit pri, est ad essent.",
 					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
 					new ArrayList<>(),
 					exh
