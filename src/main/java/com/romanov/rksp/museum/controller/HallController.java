@@ -1,6 +1,5 @@
 package com.romanov.rksp.museum.controller;
 
-import com.romanov.rksp.museum.dto.ExhibitHallsDto;
 import com.romanov.rksp.museum.dto.HallShowpiecesDto;
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
@@ -11,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +59,7 @@ public class HallController {
         return "modify_form_hall";
     }
 
+    //TODO check for any null fields if updated
     @PostMapping("/edit/halls/save")
     public String saveHall(@ModelAttribute HallShowpiecesDto hallShowpiecesDto) {
         Hall hall = hallShowpiecesDto.getHall();

@@ -51,6 +51,7 @@ public class ShowpieceController {
         return "modify_form_shwp";
     }
 
+    //TODO check for any null fields if updated
     @PostMapping("/edit/showpieces/save")
     public String saveShowpiece(
             @ModelAttribute("showpiece") Showpiece showpiece,

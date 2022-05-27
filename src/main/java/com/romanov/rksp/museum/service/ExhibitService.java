@@ -2,36 +2,21 @@ package com.romanov.rksp.museum.service;
 
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
-import com.romanov.rksp.museum.repository.ExhibitRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.util.ListUtils;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-@Service
-public class ExhibitService {
-    private final ExhibitRepo exhibitRepo;
+public interface ExhibitService {
+    List<Exhibit> findAllExhibits();
 
-    @Autowired
-    public ExhibitService(ExhibitRepo exhibitRepo){
-        this.exhibitRepo = exhibitRepo;
-    }
+    Exhibit findExhibitById(Long exh_id);
 
-    public List<Exhibit> findAllExhibits() {
-        return exhibitRepo.findAll();
-    }
+    Exhibit saveExhibit(Exhibit exhibit);
 
-    public Exhibit findExhibitById(Long exh_id) {
-        return exhibitRepo.findExhibitById(exh_id);
-    }
+    Set<Long> processHalls(Collection<Hall> halls);
 
-    public Exhibit saveExhibit(Exhibit exhibit) {
-        return exhibitRepo.save(exhibit);
-    }
+    ArrayList<Set<Long>> saveExhibitAndProcessHalls(Exhibit exhibit, Collection<Hall> hallsAfterUpdate);
 
-    public void deleteExhibitById(Long id) {
-        exhibitRepo.deleteById(id);
-    }
+    void deleteExhibitById(Long id);
+
+    void updateImageById(Long id, String imgUrl);
 }

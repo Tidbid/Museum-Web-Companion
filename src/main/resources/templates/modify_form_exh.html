@@ -17,6 +17,7 @@
               enctype="multipart/form-data"
         >
             <input type="hidden" th:field="*{exhibit.id}" th:value="${exhibitHallsDto.getExhibit().getId()}"/>
+            <input type="hidden" th:field="*{exhibit.imageUrl}" th:value="${exhibitHallsDto.getExhibit().getImageUrl()}"/>
             <div class="container row justify-content-start m-0 p-0">
                 <p class="col-4 p-0 mb-4">
                     <input type="text" th:field="*{exhibit.name}" placeholder="Название выставки" class="form-control" required/>
@@ -71,7 +72,11 @@
                                type="checkbox"
                                th:value="${hall.getId()}"
                                th:field="*{hallsToAdd}"
-                               />
+                               checked/>
+                        <input type="hidden"
+                               th:value="${hall.getId()}"
+                               th:field="*{exhibit.halls}"
+                        />
                     </td>
                 </tr>
                 <tr th:each="hall:${vacantHalls}">

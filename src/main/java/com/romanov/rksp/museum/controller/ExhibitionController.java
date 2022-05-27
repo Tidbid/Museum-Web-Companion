@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,17 +44,19 @@ public class ExhibitionController {
 
     @GetMapping("/edit/exhibitions/create")
     public String showNewExhibitForm(Model model) {
-        model.addAttribute("exhibitHallsDto", new ExhibitHallsDto(new Exhibit(), new ArrayList<>()));
+        Exhibit exhibit = new Exhibit();
+        exhibit.setHalls(new ArrayList<>());
+        model.addAttribute("exhibitHallsDto", new ExhibitHallsDto(exhibit, new ArrayList<>()));
         model.addAttribute("vacantHalls", hallService.findVacantHalls());
         model.addAttribute("head", "Создать");
-        return "modify_form_exh";
+            return "modify_form_exh";
     }
 
     @GetMapping("/edit/exhibitions/update")
     public String updateExhibit(@RequestParam Long exh_id, Model model) {
         Exhibit exhibit = exhibitService.findExhibitById(exh_id);
         model.addAttribute("exhibitHallsDto",
-                new ExhibitHallsDto(exhibit, (List<Hall>) exhibit.getHalls()));
+                new ExhibitHallsDto(exhibit, exhibit.getHalls()));
         model.addAttribute("vacantHalls", hallService.findVacantHalls());
         model.addAttribute("head", "Изменить");
         return "modify_form_exh";
@@ -64,28 +68,28 @@ public class ExhibitionController {
             @RequestParam("image") MultipartFile multipartFile
     ) {
         Exhibit exhibit = exhibitHallsDto.getExhibit();
-        //Exhibit oldExhibit = exhibitService.findExhibitById(exhibit.getId());
-        exhibitService.saveExhibit(exhibit);
-        hallService.assignExhibit(exhibit, exhibitHallsDto.getHallsToAdd());
+        ArrayList<Set<Long>> halls =
+                exhibitService.saveExhibitAndProcessHalls(exhibit, exhibitHallsDto.getHallsToAdd());
+        hallService.makeOrphan(halls.get(0));
+        hallService.assignExhibit(exhibit.getId(), halls.get(1));
         String imgUrl = imageService.saveExhibitionImage(exhibit, multipartFile);
-        exhibit.setImageUrl(imgUrl);
-        //TODO look into JPA more closely
-        // this entity should be persisted
-        // but the session does not flush and
-        // changes are not committed without this save
-        // (should remove it but don't care to rn)
-        exhibitService.saveExhibit(exhibit);
+        exhibitService.updateImageById(exhibit.getId(), imgUrl);
         return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
     }
 
     @GetMapping("/edit/exhibitions/delete")
     public String deleteExhibit(@RequestParam Long exh_id, Model model){
-        //TODO supplant this inefficient garbage with
+        //TODO can be made more efficient by
         // ADD CONSTRAINT ON DELETE SET NULL
         // in the database
-        hallService.makeOrphan(exhibitService.findExhibitById(exh_id).getHalls());
-        //TODO delete images, since they will clog
+        List<Hall> halls = (List<Hall>) exhibitService.findExhibitById(exh_id).getHalls();
+        Set<Long> orphans = new LinkedHashSet<>(halls.size());
+        for (Hall hall : halls)
+            orphans.add(hall.getId());
+        hallService.makeOrphan(orphans);
+        //TODO add modelparam that will allow user to choose to delete halls!!!
+        //TODO add image deletion, since they will clog the disk
         exhibitService.deleteExhibitById(exh_id);
-        return "redirect:/exhibitions";
+        return "redirect:/museum/browse/exhibitions";
     }
 }
