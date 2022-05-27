@@ -37,6 +37,7 @@ public class HallService {
     }
 
     public void assignExhibit(Exhibit exhibit, List<Hall> hallsToAdd) {
+        //hallRepo.assignExhibit(hallsToAdd, exhibit);
         for (Hall hall : hallsToAdd) {
             hall.setExhibit(exhibit);
             hallRepo.save(hall);
