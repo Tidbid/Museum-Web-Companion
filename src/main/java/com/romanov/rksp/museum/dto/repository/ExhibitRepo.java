@@ -15,5 +15,5 @@ public interface ExhibitRepo extends JpaRepository<Exhibit, Long> {
     @Modifying
     @Query(value= "UPDATE exhibit SET image_url = ?1 WHERE id = ?2",
             nativeQuery = true)
-    void updateImageUrlById(String imageUrl, Long exhId);
+    void updateImageUrlById(String imgUrl, Long id);
 }

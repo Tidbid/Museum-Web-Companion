@@ -15,5 +15,7 @@ public interface ShowpieceService {
 
     Collection<Showpiece> findVacantShowpieces();
 
-    void deleteShowpieceById(Long id);
+    void updateImageById(Long id, String imgUrl);
+
+    Long deleteShowpieceById(Long id);
 }

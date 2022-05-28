@@ -58,25 +58,20 @@ public class ShowpieceController {
             @RequestParam("image") MultipartFile multipartFile
     ) {
         showpieceService.saveShowpiece(showpiece);
-        String imgUrl = imageService.saveShowpieceImage(showpiece, multipartFile);
-        showpiece.setImageUrl(imgUrl);
-        //TODO look into JPA more closely
-        // this entity should be persisted
-        // but the session does not flush and
-        // changes are not committed without this save
-        // (should remove it but don't care to rn)
-        showpieceService.saveShowpiece(showpiece);
+        showpieceService.updateImageById(
+                showpiece.getId(),
+                imageService.saveShowpieceImage(showpiece, multipartFile)
+        );
         return "redirect:/museum/browse/showpieces/more?shwp_id=" + showpiece.getId().toString();
     }
 
     @GetMapping("/edit/showpieces/delete")
-    public String deleteShowpiece(@RequestParam Long shwp_id, Model model){
-        Showpiece showpiece = showpieceService.findShowpieceById(shwp_id);
+    public String deleteShowpiece(@RequestParam Long shwp_id){
+        Long hall_id = showpieceService.deleteShowpieceById(shwp_id);
         String ret = "redirect:/museum/browse/";
-        ret += (showpiece.getHall() == null) ?
-                "showpieces/orphans" : "/halls/showpieces?hall_id=" + showpiece.getHall().getId();
-        //TODO delete images, since they will clog
-        showpieceService.deleteShowpieceById(shwp_id);
+        ret += (hall_id == null) ?
+                "showpieces/orphans" : "/halls/showpieces?hall_id=" + hall_id;
+        //TODO delete images
         return ret;
     }
 }

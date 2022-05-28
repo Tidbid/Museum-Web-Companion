@@ -17,6 +17,8 @@
               enctype="multipart/form-data"
         >
             <input type="hidden" th:field="*{id}" th:value="${showpiece.getId()}"/>
+            <input type="hidden" th:field="*{hall}" th:value="${showpiece.getHall().getId()}"/>
+            <input type="hidden" th:field="*{imageUrl}" th:value="${showpiece.getImageUrl()}"/>
             <div class="container row justify-content-start align-items-center m-0 p-0">
                 <p class="col-4 p-0 mb-4">
                     <label for="nameInput" class="form-label">

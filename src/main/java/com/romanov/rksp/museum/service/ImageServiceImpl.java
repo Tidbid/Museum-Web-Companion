@@ -34,7 +34,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    //TODO looks ugly, change it. does work though
+    //TODO looks ugly, change it
     public String saveExhibitionImage(Exhibit exhibit, MultipartFile exhImg) {
         String retUrl;
         if (exhImg.isEmpty() && exhibit.getImageUrl() == null) {
@@ -67,7 +67,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    //TODO looks ugly, change it. mb doesn't even work
+    //TODO looks ugly, change it
     public String saveShowpieceImage(Showpiece showpiece, MultipartFile showpieceImg) {
         String retUrl;
         if (showpieceImg.isEmpty() && showpiece.getImageUrl() == null) {

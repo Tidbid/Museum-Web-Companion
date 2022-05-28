@@ -37,7 +37,15 @@ public class ShowpieceServiceImpl implements ShowpieceService {
     }
 
     @Override
-    public void deleteShowpieceById(Long id) {
+    public void updateImageById(Long id, String imgUrl) {
+        showpieceRepo.updateImageById(imgUrl, id);
+    }
+
+    @Override
+    public Long deleteShowpieceById(Long id) {
+        Showpiece showpiece = showpieceRepo.findShowpieceById(id);
+        Long hall_id = (showpiece.getHall() == null) ? null : showpiece.getHall().getId();
         showpieceRepo.deleteById(id);
+        return hall_id;
     }
 }

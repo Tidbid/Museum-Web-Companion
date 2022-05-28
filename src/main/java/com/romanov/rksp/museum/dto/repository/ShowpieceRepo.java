@@ -33,4 +33,10 @@ public interface ShowpieceRepo extends JpaRepository<Showpiece, Long> {
             nativeQuery = true
     )
     void makeOrphan(Collection<Long> ids);
+
+    @Transactional
+    @Modifying
+    @Query(value= "UPDATE showpiece SET image_url = ?1 WHERE id = ?2",
+            nativeQuery = true)
+    void updateImageById(String imgUrl, Long id);
 }

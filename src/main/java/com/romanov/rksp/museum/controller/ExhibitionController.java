@@ -68,17 +68,17 @@ public class ExhibitionController {
                 exhibitHallsDto.getExhibit(),
                 exhibitHallsDto.getHallsToAdd()
         );
-        exhibitService.updateImageById(exhibit.getId(), imageService.saveExhibitionImage(exhibit, multipartFile));
+        exhibitService.updateImageById(
+                exhibit.getId(),
+                imageService.saveExhibitionImage(exhibit, multipartFile)
+        );
         return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
     }
 
     @GetMapping("/edit/exhibitions/delete")
     public String deleteExhibit(@RequestParam Long exh_id, @RequestParam Boolean erase){
-        //TODO can be made more efficient by
-        // ADD CONSTRAINT ON DELETE SET NULL
-        // in the database
         exhibitService.deleteExhibitAndProcessHalls(exh_id, erase);
-        //TODO add image deletion, since they will clog the disk
+        //TODO add image deletion
         return "redirect:/museum/browse/exhibitions";
     }
 }

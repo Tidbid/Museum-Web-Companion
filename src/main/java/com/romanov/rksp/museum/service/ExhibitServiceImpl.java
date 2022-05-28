@@ -86,6 +86,9 @@ public class ExhibitServiceImpl implements ExhibitService {
         if (erase) {
             hallRepo.deleteAllById(halls);
         } else {
+            //TODO can be made more efficient by
+            // ADD CONSTRAINT ON DELETE SET NULL
+            // in the database
             hallRepo.makeOrphan(halls);
         }
         exhibitRepo.deleteById(exh_id);
