@@ -8,6 +8,11 @@
 </head>
 
 <body class="bg-light">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a th:href="@{~/museum}" class="navbar-brand">Museum of Ancient Arts</a>
+    </div>
+</nav>
 <section class="bg-light text-dark text-center">
     <div class="container">
         <h1 class="display-4 text-center pt-1 mb-4"> Укажите данные: </h1>
@@ -16,9 +21,18 @@
               method = "post"
               enctype="multipart/form-data"
         >
-            <input type="hidden" th:field="*{id}" th:value="${showpiece.getId()}"/>
-            <input type="hidden" th:field="*{hall}" th:value="${showpiece.getHall().getId()}"/>
-            <input type="hidden" th:field="*{imageUrl}" th:value="${showpiece.getImageUrl()}"/>
+            <input type="hidden"
+                   th:field="*{id}"
+                   th:value="${showpiece.getId()}"
+            />
+            <input type="hidden"
+                   th:field="*{hall}"
+                   th:value="${showpiece.getHall()}"
+            />
+            <input type="hidden"
+                   th:field="*{imageUrl}"
+                   th:value="${showpiece.getImageUrl()}"
+            />
             <div class="container row justify-content-start align-items-center m-0 p-0">
                 <p class="col-4 p-0 mb-4">
                     <label for="nameInput" class="form-label">

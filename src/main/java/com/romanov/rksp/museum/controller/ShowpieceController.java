@@ -58,10 +58,9 @@ public class ShowpieceController {
             @RequestParam("image") MultipartFile multipartFile
     ) {
         showpieceService.saveShowpiece(showpiece);
-        showpieceService.updateImageById(
-                showpiece.getId(),
-                imageService.saveShowpieceImage(showpiece, multipartFile)
-        );
+        String updatedUrl = imageService.saveShowpieceImage(showpiece, multipartFile);
+        if (!showpiece.getImageUrl().equals(updatedUrl))
+            showpieceService.updateImageById(showpiece.getId(), updatedUrl);
         return "redirect:/museum/browse/showpieces/more?shwp_id=" + showpiece.getId().toString();
     }
 

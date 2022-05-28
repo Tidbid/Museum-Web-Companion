@@ -68,10 +68,9 @@ public class ExhibitionController {
                 exhibitHallsDto.getExhibit(),
                 exhibitHallsDto.getHallsToAdd()
         );
-        exhibitService.updateImageById(
-                exhibit.getId(),
-                imageService.saveExhibitionImage(exhibit, multipartFile)
-        );
+        String updatedUrl = imageService.saveExhibitionImage(exhibit, multipartFile);
+        if (!exhibit.getImageUrl().equals(updatedUrl))
+            exhibitService.updateImageById(exhibit.getId(), updatedUrl);
         return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
     }
 

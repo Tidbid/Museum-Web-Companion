@@ -37,8 +37,7 @@ public class ImageServiceImpl implements ImageService {
     //TODO looks ugly, change it
     public String saveExhibitionImage(Exhibit exhibit, MultipartFile exhImg) {
         String retUrl;
-        if (exhImg.isEmpty() && exhibit.getImageUrl() == null) {
-            //user decided not to choose an image
+        if (exhImg.isEmpty() && (exhibit.getImageUrl() == null || exhibit.getImageUrl().isEmpty())) {
             log.info("Assigning random image to exhibit: {}", exhibit.getName());
             retUrl = getRandomExhibitionImage();
         } else if (exhImg.isEmpty()) {
@@ -60,7 +59,9 @@ public class ImageServiceImpl implements ImageService {
                         exhibit.getName(),
                         e.getMessage());
                 //if no image then random, else keep
-                retUrl = (exhibit.getImageUrl() == null) ? getRandomExhibitionImage() : exhibit.getImageUrl();
+                retUrl =
+                        (exhibit.getImageUrl() == null || exhibit.getImageUrl().isEmpty()) ?
+                                getRandomExhibitionImage() : exhibit.getImageUrl();
             }
         }
         return retUrl;
@@ -70,7 +71,7 @@ public class ImageServiceImpl implements ImageService {
     //TODO looks ugly, change it
     public String saveShowpieceImage(Showpiece showpiece, MultipartFile showpieceImg) {
         String retUrl;
-        if (showpieceImg.isEmpty() && showpiece.getImageUrl() == null) {
+        if (showpieceImg.isEmpty() && (showpiece.getImageUrl() == null || showpiece.getImageUrl().isEmpty())) {
             //user decided not to choose an image
             log.info("Assigning default image to showpiece: {}", showpiece.getName());
             return getDefaultShowpieceImage();
@@ -93,7 +94,9 @@ public class ImageServiceImpl implements ImageService {
                         showpiece.getName(),
                         e.getMessage());
                 //if no image then default, else keep
-                retUrl = (showpiece.getImageUrl() == null) ? getDefaultShowpieceImage() : showpiece.getImageUrl();
+                retUrl =
+                        (showpiece.getImageUrl() == null || showpiece.getImageUrl().isEmpty()) ?
+                                getDefaultShowpieceImage() : showpiece.getImageUrl();
             }
         }
         return retUrl;

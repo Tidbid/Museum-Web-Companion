@@ -8,6 +8,11 @@
 </head>
 
 <body class="bg-light">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a th:href="@{~/museum}" class="navbar-brand">Museum of Ancient Arts</a>
+    </div>
+</nav>
 <section class="bg-light text-dark text-center">
     <div class="container">
         <h1 class="display-4 text-center pt-1 mb-4"> Укажите данные: </h1>
@@ -15,8 +20,18 @@
               th:object="${hallShowpiecesDto}"
               method = "post"
         >
-            <input type="hidden" th:field="*{hall.id}" th:value="${hallShowpiecesDto.getHall().getId()}"/>
-            <input type="hidden" th:field="*{hall.exhibit}" th:value="${hallShowpiecesDto.getHall().getExhibit().getId()}"/>
+            <input type="hidden"
+                   th:field="*{hall.id}"
+                   th:value="${hallShowpiecesDto.getHall().getId()}"
+            />
+            <input type="hidden"
+                   th:field="*{hall.exhibit}"
+                   th:value="${hallShowpiecesDto.getHall().getExhibit()}"
+            />
+            <input type="hidden"
+                   th:field="*{hall.showpieces}"
+                   th:value="${hallShowpiecesDto.getHall().getShowpieces()}"
+            />
             <div class="container row justify-content-start m-0 p-0">
                 <p class="col-3 p-0 mb-4">
                     <label for="numberInput" class="form-label">
@@ -77,10 +92,7 @@
                                type="checkbox"
                                th:value="${showpiece.getId()}"
                                th:field="*{showpiecesToAdd}"
-                               checked/>
-                        <input type="hidden"
-                               th:value="${showpiece.getId()}"
-                               th:field="*{hall.showpieces}"
+                               checked="checked"
                         />
                     </td>
                 </tr>
@@ -92,7 +104,7 @@
                                type="checkbox"
                                th:value="${showpiece.getId()}"
                                th:field="*{showpiecesToAdd}"
-                               />
+                        />
                     </td>
                 </tr>
                 </tbody>

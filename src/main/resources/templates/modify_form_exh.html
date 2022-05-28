@@ -8,6 +8,11 @@
 </head>
 
 <body class="bg-light">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a th:href="@{~/museum}" class="navbar-brand">Museum of Ancient Arts</a>
+    </div>
+</nav>
 <section class="bg-light text-dark text-center">
     <div class="container">
         <h1 class="display-4 text-center pt-1 mb-4"> Укажите данные: </h1>
@@ -17,7 +22,12 @@
               enctype="multipart/form-data"
         >
             <input type="hidden" th:field="*{exhibit.id}" th:value="${exhibitHallsDto.getExhibit().getId()}"/>
-            <input type="hidden" th:field="*{exhibit.imageUrl}" th:value="${exhibitHallsDto.getExhibit().getImageUrl()}"/>
+            <input type="hidden"
+                   th:field="*{exhibit.imageUrl}"
+                   th:value="${exhibitHallsDto.getExhibit().getImageUrl()}"/>
+            <input type="hidden"
+                   th:field="*{exhibit.halls}"
+                   th:value="${exhibitHallsDto.getExhibit().getHalls()}"/>
             <div class="container row justify-content-start m-0 p-0">
                 <p class="col-4 p-0 mb-4">
                     <input type="text" th:field="*{exhibit.name}" placeholder="Название выставки" class="form-control" required/>
@@ -72,10 +82,7 @@
                                type="checkbox"
                                th:value="${hall.getId()}"
                                th:field="*{hallsToAdd}"
-                               checked/>
-                        <input type="hidden"
-                               th:value="${hall.getId()}"
-                               th:field="*{exhibit.halls}"
+                               checked="checked"
                         />
                     </td>
                 </tr>
@@ -87,7 +94,8 @@
                         <input class="form-check-input"
                                type="checkbox"
                                th:value="${hall.getId()}"
-                               th:field="*{hallsToAdd}" />
+                               th:field="*{hallsToAdd}"
+                        />
                     </td>
                 </tr>
                 </tbody>
