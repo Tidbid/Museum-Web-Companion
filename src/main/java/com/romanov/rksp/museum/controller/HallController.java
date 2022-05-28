@@ -59,26 +59,21 @@ public class HallController {
         return "modify_form_hall";
     }
 
-    //TODO check for any null fields if updated
     @PostMapping("/edit/halls/save")
     public String saveHall(@ModelAttribute HallShowpiecesDto hallShowpiecesDto) {
-        Hall hall = hallShowpiecesDto.getHall();
-        hallService.saveHall(hall);
-        showpieceService.assignHall(hall, hallShowpiecesDto.getShowpiecesToAdd());
+        Hall hall = hallService.saveHallAndProcessShowpieces(
+                hallShowpiecesDto.getHall(),
+                hallShowpiecesDto.getShowpiecesToAdd()
+        );
         return "redirect:/museum/browse/halls/showpieces?hall_id=" + hall.getId().toString();
     }
 
     @GetMapping("/edit/halls/delete")
-    public String deleteHall(@RequestParam Long hall_id, Model model){
-        Hall hall = hallService.findHallById(hall_id);
+    public String deleteHall(@RequestParam Long hall_id, @RequestParam Boolean erase){
+        Long exh_id = hallService.deleteHallAndProcessShowpieces(hall_id, erase);
         String ret = "redirect:/museum/browse/";
-        ret += (hall.getExhibit() == null) ?
-                "halls/orphans" : "exhibitions/halls?exh_id=" + hall.getExhibit().getId();
-        //TODO supplant this inefficient garbage with
-        // ADD CONSTRAINT ON DELETE SET NULL
-        // in the database
-        showpieceService.makeOrphan(hall.getShowpieces());
-        hallService.deleteHallById(hall_id);
+        ret += (exh_id == null) ?
+                "halls/orphans" : "exhibitions/halls?exh_id=" + exh_id;
         return ret;
     }
 }

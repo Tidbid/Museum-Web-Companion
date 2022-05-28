@@ -1,4 +1,4 @@
-package com.romanov.rksp.museum.repository;
+package com.romanov.rksp.museum.dto.repository;
 
 import com.romanov.rksp.museum.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

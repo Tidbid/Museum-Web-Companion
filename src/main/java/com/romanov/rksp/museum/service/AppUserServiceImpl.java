@@ -3,22 +3,18 @@ package com.romanov.rksp.museum.service;
 import com.romanov.rksp.museum.dto.UserRegistrationDto;
 import com.romanov.rksp.museum.model.AppUser;
 import com.romanov.rksp.museum.model.Role;
-import com.romanov.rksp.museum.repository.AppUserRepo;
-import com.romanov.rksp.museum.repository.RoleRepo;
+import com.romanov.rksp.museum.dto.repository.AppUserRepo;
+import com.romanov.rksp.museum.dto.repository.RoleRepo;
 import com.romanov.rksp.museum.util.RolesToAuthorities;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 @Service
 @RequiredArgsConstructor

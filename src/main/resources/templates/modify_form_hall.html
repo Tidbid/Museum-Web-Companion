@@ -16,6 +16,7 @@
               method = "post"
         >
             <input type="hidden" th:field="*{hall.id}" th:value="${hallShowpiecesDto.getHall().getId()}"/>
+            <input type="hidden" th:field="*{hall.exhibit}" th:value="${hallShowpiecesDto.getHall().getExhibit().getId()}"/>
             <div class="container row justify-content-start m-0 p-0">
                 <p class="col-3 p-0 mb-4">
                     <label for="numberInput" class="form-label">
@@ -77,6 +78,10 @@
                                th:value="${showpiece.getId()}"
                                th:field="*{showpiecesToAdd}"
                                checked/>
+                        <input type="hidden"
+                               th:value="${showpiece.getId()}"
+                               th:field="*{hall.showpieces}"
+                        />
                     </td>
                 </tr>
                 <tr th:each="showpiece:${vacantShowpieces}">
@@ -94,7 +99,7 @@
             </table>
             <div class="container row justify-content-evenly">
                 <button type="submit" class="btn btn-success btn-lg col-2 align-self-center">Сохранить</button>
-                <a th:href="@{~/exhibitions}" class="btn btn-danger btn-lg col-2 align-self-center">Отменить</a>
+                <a th:href="@{~/museum}" class="btn btn-danger btn-lg col-2 align-self-center">Отменить</a>
             </div>
         </form>
     </div>

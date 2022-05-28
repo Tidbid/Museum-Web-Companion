@@ -14,9 +14,11 @@ public interface ExhibitService {
 
     Set<Long> processHalls(Collection<Hall> halls);
 
-    ArrayList<Set<Long>> saveExhibitAndProcessHalls(Exhibit exhibit, Collection<Hall> hallsAfterUpdate);
+    Exhibit saveExhibitAndProcessHalls(Exhibit exhibit, Collection<Hall> hallsAfterUpdate);
 
     void deleteExhibitById(Long id);
+
+    void deleteExhibitAndProcessHalls(Long exh_id, Boolean erase);
 
     void updateImageById(Long id, String imgUrl);
 }

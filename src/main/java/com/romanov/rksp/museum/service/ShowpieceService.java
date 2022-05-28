@@ -7,15 +7,13 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ShowpieceService {
-    Showpiece findShowpieceById(Long showpId);
+    Showpiece findShowpieceById(Long id);
 
     Showpiece saveShowpiece(Showpiece showpiece);
 
     void makeOrphan(Collection<Showpiece> showpieces);
 
-    List<Showpiece> findVacantShowpieces();
+    Collection<Showpiece> findVacantShowpieces();
 
-    void assignHall(Hall hall, List<Showpiece> showpiecesToAdd);
-
-    void deleteShowpieceById(Long shwp_id);
+    void deleteShowpieceById(Long id);
 }

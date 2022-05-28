@@ -12,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -67,29 +64,21 @@ public class ExhibitionController {
             @ModelAttribute("exhibitHallsDto") ExhibitHallsDto exhibitHallsDto,
             @RequestParam("image") MultipartFile multipartFile
     ) {
-        Exhibit exhibit = exhibitHallsDto.getExhibit();
-        ArrayList<Set<Long>> halls =
-                exhibitService.saveExhibitAndProcessHalls(exhibit, exhibitHallsDto.getHallsToAdd());
-        hallService.makeOrphan(halls.get(0));
-        hallService.assignExhibit(exhibit.getId(), halls.get(1));
-        String imgUrl = imageService.saveExhibitionImage(exhibit, multipartFile);
-        exhibitService.updateImageById(exhibit.getId(), imgUrl);
+        Exhibit exhibit = exhibitService.saveExhibitAndProcessHalls(
+                exhibitHallsDto.getExhibit(),
+                exhibitHallsDto.getHallsToAdd()
+        );
+        exhibitService.updateImageById(exhibit.getId(), imageService.saveExhibitionImage(exhibit, multipartFile));
         return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
     }
 
     @GetMapping("/edit/exhibitions/delete")
-    public String deleteExhibit(@RequestParam Long exh_id, Model model){
+    public String deleteExhibit(@RequestParam Long exh_id, @RequestParam Boolean erase){
         //TODO can be made more efficient by
         // ADD CONSTRAINT ON DELETE SET NULL
         // in the database
-        List<Hall> halls = (List<Hall>) exhibitService.findExhibitById(exh_id).getHalls();
-        Set<Long> orphans = new LinkedHashSet<>(halls.size());
-        for (Hall hall : halls)
-            orphans.add(hall.getId());
-        hallService.makeOrphan(orphans);
-        //TODO add modelparam that will allow user to choose to delete halls!!!
+        exhibitService.deleteExhibitAndProcessHalls(exh_id, erase);
         //TODO add image deletion, since they will clog the disk
-        exhibitService.deleteExhibitById(exh_id);
         return "redirect:/museum/browse/exhibitions";
     }
 }

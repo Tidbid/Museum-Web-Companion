@@ -2,7 +2,8 @@ package com.romanov.rksp.museum.service;
 
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
-import com.romanov.rksp.museum.repository.ExhibitRepo;
+import com.romanov.rksp.museum.dto.repository.ExhibitRepo;
+import com.romanov.rksp.museum.dto.repository.HallRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ExhibitServiceImpl implements ExhibitService {
     private final ExhibitRepo exhibitRepo;
+
+    private final HallRepo hallRepo;
 
     @Override
     public List<Exhibit> findAllExhibits() {
@@ -28,6 +31,7 @@ public class ExhibitServiceImpl implements ExhibitService {
         return exhibitRepo.save(exhibit);
     }
 
+    //TODO maybe make it generic and put into utility class (types with getId() method)
     @Override
     public Set<Long> processHalls(Collection<Hall> halls) {
         Set<Long> ret;
@@ -42,7 +46,7 @@ public class ExhibitServiceImpl implements ExhibitService {
     }
 
     @Override
-    public ArrayList<Set<Long>> saveExhibitAndProcessHalls(Exhibit exhibit, Collection<Hall> hallsAfterUpdate) {
+    public Exhibit saveExhibitAndProcessHalls(Exhibit exhibit, Collection<Hall> hallsAfterUpdate) {
         exhibitRepo.save(exhibit);
         //this set contains elements that
         //should be linked to that exhibit
@@ -64,15 +68,27 @@ public class ExhibitServiceImpl implements ExhibitService {
         //in the end we get:
         //orphans = (orphans(original) / hallsToAdd(original)) - set of elements that should be detached
         //hallsToAdd = (hallsToAdd(original) / orphans(original)) - set of elements that should be attached
-        ArrayList<Set<Long>> ret = new ArrayList<>(2);
-        ret.add(orphans);
-        ret.add(hallsToAdd);
-        return ret;
+        if (!hallsToAdd.isEmpty())
+            hallRepo.assignExhibit(exhibit.getId(), hallsToAdd);
+        if (!orphans.isEmpty())
+            hallRepo.makeOrphan(orphans);
+        return exhibit;
     }
 
     @Override
     public void deleteExhibitById(Long id) {
         exhibitRepo.deleteById(id);
+    }
+
+    @Override
+    public void deleteExhibitAndProcessHalls(Long exh_id, Boolean erase) {
+        Set<Long> halls = processHalls(exhibitRepo.findExhibitById(exh_id).getHalls());
+        if (erase) {
+            hallRepo.deleteAllById(halls);
+        } else {
+            hallRepo.makeOrphan(halls);
+        }
+        exhibitRepo.deleteById(exh_id);
     }
 
     @Override

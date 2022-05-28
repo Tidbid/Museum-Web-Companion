@@ -1,4 +1,4 @@
-package com.romanov.rksp.museum.repository;
+package com.romanov.rksp.museum.dto.repository;
 
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
@@ -12,19 +12,19 @@ import java.util.Collection;
 import java.util.List;
 
 public interface HallRepo extends JpaRepository<Hall, Long> {
-    Hall findHallById(Long hallId);
+    Hall findHallById(Long id);
 
     @Query(
             value = "SELECT * FROM hall WHERE exhibit_id = :exh_id",
             nativeQuery = true
     )
-    List<Hall> findHallByExhibitId(@Param("exh_id") Long exh_id);
+    Collection<Hall> findHallByExhibitId(@Param("exh_id") Long exh_id);
 
     @Query(
             value = "SELECT * FROM hall WHERE exhibit_id IS NULL",
             nativeQuery = true
     )
-    List<Hall> findVacantHalls();
+    Collection<Hall> findVacantHalls();
 
     @Transactional
     @Modifying
@@ -32,7 +32,7 @@ public interface HallRepo extends JpaRepository<Hall, Long> {
             value = "UPDATE hall SET exhibit_id = ?1 WHERE id IN ?2",
             nativeQuery = true
     )
-    void assignExhibit(Long exhId, Collection<Long> idColl);
+    void assignExhibit(Long exhId, Collection<Long> ids);
 
     @Transactional
     @Modifying
@@ -40,5 +40,5 @@ public interface HallRepo extends JpaRepository<Hall, Long> {
             value = "UPDATE hall SET exhibit_id = NULL WHERE id IN ?1",
             nativeQuery = true
     )
-    void makeOrphan(Collection<Long> idColl);
+    void makeOrphan(Collection<Long> ids);
 }
