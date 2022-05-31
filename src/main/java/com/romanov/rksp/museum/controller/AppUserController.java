@@ -1,10 +1,10 @@
 package com.romanov.rksp.museum.controller;
 
 import com.romanov.rksp.museum.dto.UserRegistrationDto;
+import com.romanov.rksp.museum.dto.UserRolesDto;
 import com.romanov.rksp.museum.model.AppUser;
 import com.romanov.rksp.museum.model.Role;
 import com.romanov.rksp.museum.service.AppUserService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @Controller
 @RequestMapping("/museum/security")
@@ -28,9 +27,13 @@ public class AppUserController {
     }
 
     @PostMapping("/user/registration")
-    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
-        appUserService.saveUser(userRegistrationDto);
-        return "redirect:/museum/security/user/registration?success";
+    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, Model model) {
+        if (appUserService.validateUsername(userRegistrationDto.getUsername())) {
+            appUserService.saveUser(userRegistrationDto);
+            return "redirect:/museum/security/user/registration?success";
+        }
+        model.addAttribute("user", userRegistrationDto);
+        return "registration";
     }
 
     @GetMapping("/user/login")
@@ -38,14 +41,8 @@ public class AppUserController {
         return "login";
     }
 
-    @GetMapping("/user/all")
-    public ResponseEntity<List<AppUser>> getUsers() {
-        return ResponseEntity.ok().body(appUserService.getUsers());
-    }
-
     @PostMapping("/user/save")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
-        //tf is uri
         URI uri =
                 URI.create(
                         ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/save").toUriString()
@@ -62,15 +59,25 @@ public class AppUserController {
         return ResponseEntity.created(uri).body(appUserService.saveRole(role));
     }
 
-    @PostMapping("/role/assign")
-    public ResponseEntity<?> assignRole(@RequestBody RoleToUserForm form) {
-        appUserService.addRoleToUser(form.getUsername(), form.getRoleName());
-        return ResponseEntity.ok().build();
+    @GetMapping("/admin/user")
+    public String updateUser(@RequestParam String username, Model model) {
+        AppUser user = appUserService.getUser(username);
+        model.addAttribute("userRolesDto", new UserRolesDto(user, user.getRoles()));
+        model.addAttribute("remainingRoles", appUserService.getRemainingRoles(user.getRoles()));
+        return "modify_form_user";
     }
-}
 
-@Data
-class RoleToUserForm{
-    private String username;
-    private String roleName;
+    @GetMapping("/admin/all")
+    public String getUsers(Model model) {
+        model.addAttribute("users", appUserService.getUsers());
+        return "all_users";
+    }
+
+    @PostMapping("/admin/save")
+    public String modifyUser(@ModelAttribute("userRolesDto") UserRolesDto userRolesDto) {
+        AppUser user = userRolesDto.getUser();
+        user.setRoles(userRolesDto.getRolesToAdd());
+        appUserService.updateUser(user);
+        return "redirect:/museum/security/admin/all";
+    }
 }

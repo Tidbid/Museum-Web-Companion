@@ -23,16 +23,19 @@ import java.util.Collection;
 import java.util.List;
 
 @Controller
-@RequestMapping("/museum")
 @RequiredArgsConstructor
 public class MuseumController {
     private final ExhibitService exhibitService;
-    private final HallService hallService;
-    private final ShowpieceService showpieceService;
-    private final ImageService imageService;
 
-    @GetMapping
+    @GetMapping("/museum")
     public String viewIndexPage(Model model) {
+        model.addAttribute("active_exhibits", exhibitService.findFiveActiveExhibits());
+        return "index";
+    }
+
+    @GetMapping()
+    public String fallbackIndex(Model model) {
+        model.addAttribute("active_exhibits", exhibitService.findFiveActiveExhibits());
         return "index";
     }
 }

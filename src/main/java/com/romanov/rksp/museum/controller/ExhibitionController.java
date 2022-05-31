@@ -2,7 +2,6 @@ package com.romanov.rksp.museum.controller;
 
 import com.romanov.rksp.museum.dto.ExhibitHallsDto;
 import com.romanov.rksp.museum.model.Exhibit;
-import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.service.ExhibitService;
 import com.romanov.rksp.museum.service.HallService;
 import com.romanov.rksp.museum.service.ImageService;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -24,14 +24,25 @@ public class ExhibitionController {
 
     @GetMapping("/browse/exhibitions")
     public String viewExhibitions(Model model) {
+        //TODO display only ongoing exhibitions
+        // or separate them into two parts:
+        // ongoing and closed
         List<Exhibit> exhibitionsList = this.exhibitService.findAllExhibits();
         model.addAttribute("exhibitions", exhibitionsList);
         return "all_exh";
     }
 
-    //TODO add a view that presents
-    // elaborate information about an
-    // exhibition (from which we can get to halls)
+    @GetMapping("/browse/exhibitions/more")
+    public String viewExhibitionMore(@RequestParam(value="exh_id") Long exhId, Model model) {
+        Exhibit exhibit = exhibitService.findExhibitById(exhId);
+        model.addAttribute("exhibit", exhibit);
+        model.addAttribute("start",
+                exhibit.getDateStart().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        model.addAttribute("finish",
+                (exhibit.getDateFinish() == null) ?
+                        "конца времен" : exhibit.getDateStart().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        return "exhibition_more";
+    }
 
     @GetMapping("/browse/exhibitions/halls")
     public String viewHalls(@RequestParam Long exh_id, Model model) {

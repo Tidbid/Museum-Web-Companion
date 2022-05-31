@@ -1,6 +1,5 @@
 package com.romanov.rksp.museum.controller;
 
-import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.ImageService;

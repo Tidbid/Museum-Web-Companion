@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ExhibitRepo extends JpaRepository<Exhibit, Long> {
@@ -16,4 +17,12 @@ public interface ExhibitRepo extends JpaRepository<Exhibit, Long> {
     @Query(value= "UPDATE exhibit SET image_url = ?1 WHERE id = ?2",
             nativeQuery = true)
     void updateImageUrlById(String imgUrl, Long id);
+
+    @Query(value=
+            "SELECT * FROM exhibit " +
+            "WHERE date_finish > CURRENT_DATE " +
+            "ORDER BY date_finish " +
+            "FETCH FIRST 5 ROWS ONLY",
+            nativeQuery = true)
+    Collection<Exhibit> findFiveActiveExhibits();
 }
