@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title th:text="${exhibit.getName()}"></title>
+</head>
+
+<body class="bg-light">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a th:href="@{~/museum}" class="navbar-brand">Museum of Ancient Arts</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navmenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a th:href="@{~/museum}" class="nav-link">Главная Страница</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{~/museum/browse/exhibitions}" class="nav-link">Экспозиции</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{~/museum/security/user/login}" class="nav-link">Войти в Аккаунт</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a th:href="@{~/museum/security/user/logout}" class="nav-link">Выйти из Аккаунта</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section class="pt-2">
+    <div class="container text-center">
+        <h1 class="display-4" th:text="${exhibit.getName()}"></h1>
+        <a th:href="${exhibit.getImageUrl()}"><img class="img-fluid" th:src="${exhibit.getImageUrl()}"></a>
+        <h3 class="text-center fs-4 mb-2">
+            Проходит с <span class="text-primary"
+                             th:text="${start}"></span> и до  <span class="text-primary"
+                                                                    th:text="${finish}"></span>!
+        </h3>
+        <hr>
+        <h3 class="display-6">Описание:</h3>
+        <p class="lead text-start fs-4" th:text="${exhibit.getDescriptionLong()}"></p>
+        <a th:href="@{~/museum/browse/exhibitions/halls(exh_id=${exhibit.getId()})}"
+           class="btn btn-primary align-self-center my-4 col-3">Перейти к залам</a>
+    </div>
+</section>
+<hr>
+<footer class="py-2 bg-light text-dark text-center position-relative">
+    <div class="container">
+        <p class="lead">&copy; все права защищены</p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+
+</html>
