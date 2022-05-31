@@ -25,4 +25,8 @@ public interface HallService {
     void assignExhibit(Long exhId, Collection<Long> hallsToAdd);
 
     void makeOrphan(Collection<Long> poorOrphans);
+
+    void makeOrphan(Long hall_id);
+
+    Collection<Hall> findAllHalls();
 }

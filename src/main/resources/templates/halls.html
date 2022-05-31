@@ -35,14 +35,31 @@
 <section class="bg-light text-dark pt-3 text-center">
     <div class="container">
         <h1 class="display-4 text-center pt-1 mb-4"> <span th:text="${exhibit.getName()}"></span>: </h1>
-        <div class="row justify-content-evenly">
-            <div th:each="hall : ${exhibit.getHalls()}" class="col-6 col-md-3 mb-3 d-flex justify-content-center align-items-stretch">
-                <div class="card">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h4 class="card-title mb-0">Зал: <span th:text="${hall.getNumber()}"></span></h4>
-                        <h4 class="card-title" th:text="${hall.getName()}"></h4>
-                        <p class="card-text" th:text="${hall.getDescription()}"></p>
-                        <a th:href="@{~/exhibitions/halls/showpieces(hall_id=${hall.getId()})}" class="btn btn-secondary align-self-center">Список экспонатов</a>
+        <div class="container p-0">
+            <div class="row justify-content-center g-3">
+                <div th:each="hall : ${exhibit.getHalls()}" class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h2 class="card-title" th:text="${hall.getName()}"></h2>
+                            <h5 class="card-title">Зал номер <span th:text="${hall.getNumber()}"></span></h5>
+                            <p class="card-text text-start" th:text="${hall.getDescription()}"></p>
+                            <div class = "d-flex row justify-content-evenly">
+                                <a th:href="'#offcanvas' + ${hall.getId()}"
+                                   data-bs-toggle="offcanvas"
+                                   role="button"
+                                   class="btn btn-info col-5">Подробнее</a>
+                                <div class="offcanvas offcanvas-start" tabindex="-1" th:id="'offcanvas' + ${hall.getId()}">
+                                    <div class="offcanvas-header">
+                                        <h5 class="offcanvas-title text-start"
+                                            th:text="'Подробное описание зала номер ' + ${hall.getNumber()} + '. ' + ${hall.getName()}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body text-start" th:text="${hall.getDescriptionLong()}"></div>
+                                </div>
+                                <a th:href="@{~/museum/browse/halls/showpieces(hall_id=${hall.getId()})}"
+                                   class="btn btn-primary col-5">Экспонаты</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

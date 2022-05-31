@@ -83,7 +83,7 @@ public class MuseumApplication {
 							"Id soleat aliquip blandit pri, est ad essent.",
 					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
 					new ArrayList<>(),
-					null);
+					exh);
 			hallService.saveHall(hall);
 			hallService.saveHall(new Hall(
 					null,
@@ -92,9 +92,28 @@ public class MuseumApplication {
 					"Lorem ipsum dolor sit amet, id mel vocent inermis. Ut facer efficiantur mea, in albucius argumentum sed, eum ei suas solum complectitur. Quo integre nusquam ad, mea utinam bonorum propriae ei, vivendum persequeris eum eu. Error lobortis definitiones ad vis, in has facer scriptorem. Has utroque principes accommodare no.\n" +
 							"\n" +
 							"Eros.",
-					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
+					"Lorem ipsum dolor sit amet, verear ocurreret democritum nam id, " +
+							"lucilius moderatius eu vim. Probo malis accusamus te per, " +
+							"falli altera tamquam eos ne. Quo eu melius corpora postulant, " +
+							"eam ne feugiat legimus tacimates, pri in gubergren splendide. " +
+							"Id dignissim tincidunt maiestatis has, oblique lobortis nec id, te sale iusto mediocrem sit. " +
+							"Id duo debet viris.\n " +
+							"Ius dicta voluptatibus eu, quem lobortis ea cum, unum viderer scriptorem at eam. " +
+							"In nisl oporteat sea, et error sanctus concludaturque mel. " +
+							"Ad meis saperet appetere sed, eum eruditi honestatis no, vis quem affert expetenda an. " +
+							"Id soleat aliquip blandit pri, est ad essent." +
+							"Lorem ipsum dolor sit amet, verear ocurreret democritum nam id, " +
+							"lucilius moderatius eu vim. Probo malis accusamus te per, " +
+							"falli altera tamquam eos ne. Quo eu melius corpora postulant, " +
+							"eam ne feugiat legimus tacimates, pri in gubergren splendide. " +
+							"Id dignissim tincidunt maiestatis has, oblique lobortis nec id, te sale iusto mediocrem sit. " +
+							"Id duo debet viris.\n " +
+							"Ius dicta voluptatibus eu, quem lobortis ea cum, unum viderer scriptorem at eam. " +
+							"In nisl oporteat sea, et error sanctus concludaturque mel. " +
+							"Ad meis saperet appetere sed, eum eruditi honestatis no, vis quem affert expetenda an. " +
+							"Id soleat aliquip blandit pri, est ad essent.",
 					new ArrayList<>(),
-					null
+					exh
 			));
 			hallService.saveHall(new Hall(
 					null,
@@ -110,7 +129,16 @@ public class MuseumApplication {
 							"In nisl oporteat sea, et error sanctus concludaturque mel. " +
 							"Ad meis saperet appetere sed, eum eruditi honestatis no, vis quem affert expetenda an. " +
 							"Id soleat aliquip blandit pri, est ad essent.",
-					"asdasdfasdfasdfasdfasdfasdfasdfasdfsa",
+					"Lorem ipsum dolor sit amet, verear ocurreret democritum nam id, " +
+							"lucilius moderatius eu vim. Probo malis accusamus te per, " +
+							"falli altera tamquam eos ne. Quo eu melius corpora postulant, " +
+							"eam ne feugiat legimus tacimates, pri in gubergren splendide. " +
+							"Id dignissim tincidunt maiestatis has, oblique lobortis nec id, te sale iusto mediocrem sit. " +
+							"Id duo debet viris.\n " +
+							"Ius dicta voluptatibus eu, quem lobortis ea cum, unum viderer scriptorem at eam. " +
+							"In nisl oporteat sea, et error sanctus concludaturque mel. " +
+							"Ad meis saperet appetere sed, eum eruditi honestatis no, vis quem affert expetenda an. " +
+							"Id soleat aliquip blandit pri, est ad essent.",
 					new ArrayList<>(),
 					exh
 			));
@@ -125,9 +153,8 @@ public class MuseumApplication {
 			));
 			showpieceService.saveShowpiece(new Showpiece(
 					null,
-					"Мумия древнего Самаритянина",
-					"Крайне интересная мумия, крайне древняя и крайне интересная. " +
-							"Крайне интересная мумия, крайне древняя и крайне интересная.",
+					"Верхняя часть статуэтки женщины с тамбурином",
+					"Женщина-адорант с тамбурном - неотъемлемая часть вотивных приношений в святилища Кипра в период архаики. На данной фигурке сохранился очень бледный слой красновато-розовой раскраски.",
 					"Длинное описание мумии",
 					null,
 					null

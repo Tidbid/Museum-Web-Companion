@@ -98,4 +98,16 @@ public class HallServiceImpl implements HallService {
             return;
         hallRepo.makeOrphan(poorOrphans);
     }
+
+    @Override
+    public void makeOrphan(Long hall_id) {
+        Hall hall = hallRepo.getById(hall_id);
+        hall.setExhibit(null);
+        hallRepo.save(hall);
+    }
+
+    @Override
+    public Collection<Hall> findAllHalls() {
+        return hallRepo.findAllByOrderByNameAsc();
+    }
 }

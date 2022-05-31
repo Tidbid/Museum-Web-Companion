@@ -25,4 +25,11 @@ public interface ExhibitRepo extends JpaRepository<Exhibit, Long> {
             "FETCH FIRST 5 ROWS ONLY",
             nativeQuery = true)
     Collection<Exhibit> findFiveActiveExhibits();
+
+    @Query(value=
+            "SELECT * FROM exhibit " +
+                    "WHERE date_finish > CURRENT_DATE " +
+                    "ORDER BY date_finish ",
+            nativeQuery = true)
+    Collection<Exhibit> findAllActive();
 }

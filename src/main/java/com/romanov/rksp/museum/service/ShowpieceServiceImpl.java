@@ -23,11 +23,10 @@ public class ShowpieceServiceImpl implements ShowpieceService {
     }
 
     @Override
-    public void makeOrphan(Collection<Showpiece> showpieces) {
-        for (Showpiece showpiece : showpieces) {
-            showpiece.setHall(null);
-            showpieceRepo.save(showpiece);
-        }
+    public void makeOrphan(Long shwp_id) {
+        Showpiece showpiece = showpieceRepo.findShowpieceById(shwp_id);
+        showpiece.setHall(null);
+        showpieceRepo.save(showpiece);
     }
 
     @Override
@@ -46,5 +45,10 @@ public class ShowpieceServiceImpl implements ShowpieceService {
         Long hall_id = (showpiece.getHall() == null) ? null : showpiece.getHall().getId();
         showpieceRepo.deleteById(id);
         return hall_id;
+    }
+
+    @Override
+    public Collection<Showpiece> findAllShowpieces() {
+        return showpieceRepo.findAllByOrderByNameAsc();
     }
 }

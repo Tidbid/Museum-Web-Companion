@@ -6,7 +6,9 @@ import com.romanov.rksp.museum.model.Hall;
 import java.util.*;
 
 public interface ExhibitService {
-    List<Exhibit> findAllExhibits();
+    Collection<Exhibit> findAllExhibits();
+
+    Collection<Exhibit> findAllActiveExhibits();
 
     Exhibit findExhibitById(Long exh_id);
 

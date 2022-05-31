@@ -41,4 +41,6 @@ public interface HallRepo extends JpaRepository<Hall, Long> {
             nativeQuery = true
     )
     void makeOrphan(Collection<Long> ids);
+
+    Collection<Hall> findAllByOrderByNameAsc();
 }

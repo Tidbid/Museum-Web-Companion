@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title>Экспозиции</title>
+</head>
+
+<body class="bg-light">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a th:href="@{~/museum}" class="navbar-brand">Museum of Ancient Arts</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navmenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a th:href="@{~/museum}" class="nav-link">Главная Страница</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{~/museum/browse/exhibitions}" class="nav-link">Экспозиции</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{~/museum/security/user/login}" class="nav-link">Войти в Аккаунт</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a th:href="@{~/museum/security/user/logout}" class="nav-link">Выйти из Аккаунта</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section class="bg-light text-dark pt-3 text-center">
+    <div class="container">
+        <h1 class="display-4 text-center pt-1 mb-4"> Экспозиции нашего музея: </h1>
+        <div class="row justify-content-evenly">
+            <div th:each="exhibition : ${exhibitions}" class="col-12 col-md-4 mb-3 d-flex justify-content-center align-items-stretch">
+                <div>
+                    <img th:src="@{${exhibition.getImageUrl()}}" th:alt="${exhibition.getName()}"/>
+                </div>
+                <div class="card">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h4 class="card-title" th:text="${exhibition.getName()}"></h4>
+                        <p class="card-text text-start" th:text="${exhibition.getDescription()}"></p>
+                        <a th:href="@{~/exhibitions/halls(exh_id=${exhibition.getId()})}" class="btn btn-secondary align-self-center mb-1">Список залов</a>
+                        <div class="container p-0 m-0 row justify-content-evenly">
+                            <a th:href="@{~/exhibitions/update(exh_id=${exhibition.getId()})}" class="btn btn-warning col-2 d-flex align-items-center justify-content-center" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                </svg>
+                            </a>
+                            <a th:href="@{~/exhibitions/delete(exh_id=${exhibition.getId()})}" class="btn btn-danger col-2 d-flex align-items-center justify-content-center" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" color="black" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<hr>
+<footer class="py-2 bg-light text-dark text-center position-relative">
+    <div class="container">
+        <p class="lead">&copy; все права защищены</p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+
+</html>

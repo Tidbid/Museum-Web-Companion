@@ -5,10 +5,14 @@ import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.ImageService;
 import com.romanov.rksp.museum.service.ShowpieceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,7 +27,7 @@ public class ShowpieceController {
         return "showpiece_more";
     }
 
-    @GetMapping("/browse/showpieces/orphans")
+    @GetMapping("/edit/showpieces/orphans")
     public String viewOrphanShowpieces(Model model) {
         //Using the same view that
         //displays showpieces of a hall
@@ -31,10 +35,16 @@ public class ShowpieceController {
         //no hall assigned
         Hall stub = new Hall("Свободные Экспонаты:", showpieceService.findVacantShowpieces());
         model.addAttribute("hall", stub);
-        return "showpieces";
+        return "showpieces_edit";
     }
 
-    //TODO allow to specify hall from this view
+    @GetMapping("/edit/showpieces/all")
+    public String viewAllShowpiecesInEditMode(Model model) {
+        Hall stub = new Hall("Все Экспонаты:", showpieceService.findAllShowpieces());
+        model.addAttribute("hall", stub);
+        return "showpieces_edit";
+    }
+
     @GetMapping("/edit/showpieces/create")
     public String showNewShowpieceForm(Model model) {
         model.addAttribute("showpiece", new Showpiece());
@@ -66,10 +76,17 @@ public class ShowpieceController {
     @GetMapping("/edit/showpieces/delete")
     public String deleteShowpiece(@RequestParam Long shwp_id){
         Long hall_id = showpieceService.deleteShowpieceById(shwp_id);
-        String ret = "redirect:/museum/browse/";
+        String ret = "redirect:/museum/browse/halls/showpieces";
         ret += (hall_id == null) ?
-                "showpieces/orphans" : "/halls/showpieces?hall_id=" + hall_id;
+                "" : "?hall_id=" + hall_id;
         //TODO delete images
         return ret;
+    }
+
+    //TODO add this to edit html as a button
+    @GetMapping("/edit/showpieces/orphanize")
+    public ResponseEntity<?> orphanizeShowpiece(@RequestParam Long shwp_id){
+          showpieceService.makeOrphan(shwp_id);
+          return ResponseEntity.ok().build();
     }
 }

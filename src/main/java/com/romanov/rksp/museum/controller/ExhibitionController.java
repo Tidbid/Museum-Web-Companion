@@ -27,9 +27,17 @@ public class ExhibitionController {
         //TODO display only ongoing exhibitions
         // or separate them into two parts:
         // ongoing and closed
-        List<Exhibit> exhibitionsList = this.exhibitService.findAllExhibits();
+        Collection<Exhibit> exhibitionsList = exhibitService.findAllActiveExhibits();
         model.addAttribute("exhibitions", exhibitionsList);
         return "all_exh";
+    }
+
+    //TODO html
+    @GetMapping("edit/exhibitions")
+    public String viewExhibitionsInEditMode(Model model) {
+        Collection<Exhibit> exhibitionsList = exhibitService.findAllExhibits();
+        model.addAttribute("exhibitions", exhibitionsList);
+        return "all_exh_edit";
     }
 
     @GetMapping("/browse/exhibitions/more")
@@ -45,9 +53,18 @@ public class ExhibitionController {
     }
 
     @GetMapping("/browse/exhibitions/halls")
-    public String viewHalls(@RequestParam Long exh_id, Model model) {
+    public String viewHalls(@RequestParam(required = false) Long exh_id, Model model) {
+        if (exh_id == null)
+            return "redirect:/museum/edit/halls/orphans";
         model.addAttribute("exhibit", exhibitService.findExhibitById(exh_id));
         return "halls";
+    }
+
+    //TODO html
+    @GetMapping("/edit/exhibitions/halls")
+    public String viewHallsInEditMode(@RequestParam Long exh_id, Model model) {
+        model.addAttribute("exhibit", exhibitService.findExhibitById(exh_id));
+        return "halls_edit";
     }
 
     @GetMapping("/edit/exhibitions/create")

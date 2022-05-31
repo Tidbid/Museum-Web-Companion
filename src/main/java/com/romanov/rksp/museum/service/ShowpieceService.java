@@ -11,11 +11,13 @@ public interface ShowpieceService {
 
     Showpiece saveShowpiece(Showpiece showpiece);
 
-    void makeOrphan(Collection<Showpiece> showpieces);
+    void makeOrphan(Long shwp_id);
 
     Collection<Showpiece> findVacantShowpieces();
 
     void updateImageById(Long id, String imgUrl);
 
     Long deleteShowpieceById(Long id);
+
+    Collection<Showpiece> findAllShowpieces();
 }

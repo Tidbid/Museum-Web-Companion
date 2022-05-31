@@ -7,6 +7,7 @@ import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.HallService;
 import com.romanov.rksp.museum.service.ShowpieceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,20 +23,41 @@ public class HallController {
     private final ShowpieceService showpieceService;
 
     @GetMapping("/browse/halls/showpieces")
-    public String viewShowpieces(@RequestParam Long hall_id, Model model) {
+    public String viewShowpieces(@RequestParam(required = false) Long hall_id, Model model) {
+        if (hall_id == null)
+            return "redirect:/museum/edit/showpieces/orphans";
         model.addAttribute("hall", hallService.findHallById(hall_id));
         return "showpieces";
     }
 
-    @GetMapping("/browse/halls/orphans")
+    //TODO html
+    @GetMapping("/edit/halls/showpieces")
+    public String viewShowpiecesInEditMode(@RequestParam Long hall_id, Model model) {
+        model.addAttribute("hall", hallService.findHallById(hall_id));
+        return "showpieces_edit";
+    }
+
+    @GetMapping("/edit/halls/orphans")
     public String viewOrphanHalls(Model model) {
-        //Using the same view that
-        //displays halls of an exhibit
-        //but here we display halls with
-        //no exhibit assigned
         Exhibit stub = new Exhibit("Свободные Залы:", hallService.findVacantHalls());
         model.addAttribute("exhibit", stub);
-        return "halls";
+        return "halls_edit";
+    }
+
+    //TODO add information about exhibitions of halls into HTML
+    @GetMapping("/edit/halls/all")
+    public String viewAllHallsInEditMode(Model model) {
+        Exhibit stub = new Exhibit("Все Залы:", hallService.findAllHalls());
+        model.addAttribute("exhibit", stub);
+        return "halls_edit";
+    }
+
+    //TODO add this to edit html as a button
+    // maybe it won't refresh the page?
+    @GetMapping("/edit/halls/orphanize")
+    public ResponseEntity<?> orphanizeHall(@RequestParam Long hall_id){
+        hallService.makeOrphan(hall_id);
+        return ResponseEntity.ok().build();
     }
 
     //TODO add field that will
@@ -71,9 +93,9 @@ public class HallController {
     @GetMapping("/edit/halls/delete")
     public String deleteHall(@RequestParam Long hall_id, @RequestParam Boolean erase){
         Long exh_id = hallService.deleteHallAndProcessShowpieces(hall_id, erase);
-        String ret = "redirect:/museum/browse/";
+        String ret = "redirect:/museum/browse/exhibitions/halls";
         ret += (exh_id == null) ?
-                "halls/orphans" : "exhibitions/halls?exh_id=" + exh_id;
+                "" : "?exh_id=" + exh_id;
         return ret;
     }
 }

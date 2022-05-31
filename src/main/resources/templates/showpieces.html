@@ -35,17 +35,26 @@
 <section class="bg-light text-dark pt-3 text-center">
     <div class="container">
         <div class="text-center pt-1 mb-4">
-        <p class="display-4 mb-0" th:text="${hall.getName()}"></p>
-        <p th:if="${hall.getNumber() != null}" class="display-6"> Зал: <span th:text="${hall.getNumber()}"></span> </p>
+            <p th:if="${hall.getNumber() != null}" class="display-4">
+                Зал номер <span th:text="${hall.getNumber()}"></span>
+            </p>
+            <p class="display-4 mb-0" th:text="${hall.getName()}"></p>
         </div>
-        <div class="row justify-content-evenly">
-            <div th:each="showpiece : ${hall.getShowpieces()}" class="col-12 col-md-6 mb-3 d-flex justify-content-center align-items-stretch">
-                <div class="card">
-                    <img th:src="${showpiece.getImageUrl()}" class="card-img-top w-75 align-self-center">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h4 class="card-title" th:text="${showpiece.getName()}"></h4>
-                        <p class="card-text" th:text="${showpiece.getDescription()}"></p>
-                        <a th:href="@{~/exhibitions/halls/showpieces/more(showp_id=${showpiece.getId()})}" class="btn btn-secondary align-self-center">Подробнее</a>
+        <div class="container p-0">
+            <div class="row justify-content-center g-3">
+                <div th:each="showpiece:${hall.getShowpieces()}" class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow">
+                        <img th:src="${showpiece.getImageUrl()}"
+                             th:alt="'Фото экспоната: ' + ${showpiece.getName()}"
+                             class="card-img-top"/>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${showpiece.getName()}"></h5>
+                            <p class="card-text text-start" th:text="${showpiece.getDescription()}"></p>
+                            <div class = "d-flex row justify-content-evenly">
+                                <a th:href="@{~/museum/browse/showpieces/more(shwp_id=${showpiece.getId()})}"
+                                   class="btn btn-info col-5">Подробнее</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -17,8 +17,13 @@ public class ExhibitServiceImpl implements ExhibitService {
     private final HallRepo hallRepo;
 
     @Override
-    public List<Exhibit> findAllExhibits() {
+    public Collection<Exhibit> findAllExhibits() {
         return exhibitRepo.findAll();
+    }
+
+    @Override
+    public Collection<Exhibit> findAllActiveExhibits() {
+        return exhibitRepo.findAllActive();
     }
 
     @Override
