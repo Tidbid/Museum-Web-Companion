@@ -3,8 +3,8 @@ package com.romanov.rksp.museum.service;
 import com.romanov.rksp.museum.dto.UserRegistrationDto;
 import com.romanov.rksp.museum.model.AppUser;
 import com.romanov.rksp.museum.model.Role;
-import com.romanov.rksp.museum.dto.repository.AppUserRepo;
-import com.romanov.rksp.museum.dto.repository.RoleRepo;
+import com.romanov.rksp.museum.repository.AppUserRepo;
+import com.romanov.rksp.museum.repository.RoleRepo;
 import com.romanov.rksp.museum.util.RolesToAuthorities;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -41,7 +42,16 @@ public class AppUserServiceImpl implements AppUserService {
         );
     }
 
-    //add a check for the uniqueness of the username
+    @Override
+    public AppUser getById(Long user_id) {
+        return appUserRepo.getById(user_id);
+    }
+
+    @Override
+    public Boolean validateUsername(String username) {
+        return appUserRepo.findByUsername(username) == null;
+    }
+
     @Override
     public AppUser saveUser(AppUser user) {
         log.info("Saving user {} to the database", user.getUsername());
@@ -49,7 +59,6 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserRepo.save(user);
     }
 
-    //add a check for the uniqueness of the username
     @Override
     public AppUser saveUser(UserRegistrationDto userRegistrationDto) {
         AppUser user = new AppUser(userRegistrationDto);
@@ -70,8 +79,6 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser user = appUserRepo.findByUsername(username);
         Role role = roleRepo.findByName(roleName);
         log.info("Adding role {} to a user {}", role.getName(), user.getUsername());
-        //saved by transactional
-        //check for duplicate roles
         user.getRoles().add(role);
     }
 
@@ -85,5 +92,27 @@ public class AppUserServiceImpl implements AppUserService {
     public List<AppUser> getUsers() {
         log.info("Fetching all users from the database");
         return appUserRepo.findAll();
+    }
+
+    @Override
+    public Collection<Role> getRoles() {
+        return roleRepo.findAll();
+    }
+
+    @Override
+    public Collection<Role> getRemainingRoles(Collection<Role> currentRoles) {
+        Collection<Role> roles = getRoles();
+        roles.removeAll(currentRoles);
+        return roles;
+    }
+
+    @Override
+    public AppUser updateUser(AppUser user) {
+        AppUser ret = appUserRepo.findByUsername(user.getUsername());
+        ret.setName(user.getName());
+        ret.setPatronymic(user.getPatronymic());
+        ret.setSurname(user.getSurname());
+        ret.setRoles(user.getRoles());
+        return ret;
     }
 }

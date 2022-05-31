@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class Exhibit implements Serializable {
     private LocalDate dateStart;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(nullable = false)
     private LocalDate dateFinish;
 
     @Column(length=1000)

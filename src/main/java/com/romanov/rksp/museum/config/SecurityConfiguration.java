@@ -39,11 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.anonymous().principal("guest").authorities("GUEST_ROLE")
                 .and()
                 .authorizeRequests()
-                //.hasRole("...") doesn't work
+                .antMatchers("/museum/security/admin/**").hasAuthority("ADMIN_ROLE")
                 .antMatchers("/museum/edit/**").hasAnyAuthority("MANAGER_ROLE", "ADMIN_ROLE")
-                .antMatchers("/museum/security/user/all").hasAuthority("ADMIN_ROLE")
-                .antMatchers(
-                        "museum/browse/**",
+                .antMatchers("museum/browse/**",
                 "/museum/security/user/registration**",
                 "/museum/security/user/login**"
                 ).permitAll()
@@ -51,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/museum/security/user/login")
                 .loginProcessingUrl("/museum/security/user/login")
+                .defaultSuccessUrl("/museum", true)
                 .permitAll()
                 .and()
                 .logout()

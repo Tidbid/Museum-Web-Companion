@@ -55,11 +55,12 @@ public class MuseumApplication {
 			appUserService.addRoleToUser("Adam@Smith", "USER_ROLE");
 			appUserService.addRoleToUser("Apple@Green", "MANAGER_ROLE");
 			appUserService.addRoleToUser("Drive@Lorry", "ADMIN_ROLE");
+			appUserService.addRoleToUser("Drive@Lorry", "MANAGER_ROLE");
 			Exhibit exh = new Exhibit(
 					null,
 					"test",
 					LocalDate.now(),
-					null,
+					LocalDate.now().plusYears(4),
 					"test",
 					"test_long",
 					"/img/exh/shoes.webp",

@@ -1,4 +1,4 @@
-package com.romanov.rksp.museum.dto.repository;
+package com.romanov.rksp.museum.repository;
 
 import com.romanov.rksp.museum.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;

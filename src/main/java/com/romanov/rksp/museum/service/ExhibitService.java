@@ -21,4 +21,6 @@ public interface ExhibitService {
     void deleteExhibitAndProcessHalls(Long exh_id, Boolean erase);
 
     void updateImageById(Long id, String imgUrl);
+
+    Collection<Exhibit> findFiveActiveExhibits();
 }

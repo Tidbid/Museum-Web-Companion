@@ -2,8 +2,8 @@ package com.romanov.rksp.museum.service;
 
 import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
-import com.romanov.rksp.museum.dto.repository.ExhibitRepo;
-import com.romanov.rksp.museum.dto.repository.HallRepo;
+import com.romanov.rksp.museum.repository.ExhibitRepo;
+import com.romanov.rksp.museum.repository.HallRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -97,5 +97,10 @@ public class ExhibitServiceImpl implements ExhibitService {
     @Override
     public void updateImageById(Long id, String imgUrl) {
         exhibitRepo.updateImageUrlById(imgUrl, id);
+    }
+
+    @Override
+    public Collection<Exhibit> findFiveActiveExhibits() {
+        return exhibitRepo.findFiveActiveExhibits();
     }
 }

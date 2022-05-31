@@ -1,12 +1,11 @@
 package com.romanov.rksp.museum.service;
 
 import com.romanov.rksp.museum.model.Showpiece;
-import com.romanov.rksp.museum.dto.repository.ShowpieceRepo;
+import com.romanov.rksp.museum.repository.ShowpieceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

@@ -2,8 +2,8 @@ package com.romanov.rksp.museum.service;
 
 import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.model.Showpiece;
-import com.romanov.rksp.museum.dto.repository.HallRepo;
-import com.romanov.rksp.museum.dto.repository.ShowpieceRepo;
+import com.romanov.rksp.museum.repository.HallRepo;
+import com.romanov.rksp.museum.repository.ShowpieceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
