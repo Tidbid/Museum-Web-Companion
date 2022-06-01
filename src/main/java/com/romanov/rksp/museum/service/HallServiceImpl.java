@@ -6,6 +6,7 @@ import com.romanov.rksp.museum.repository.HallRepo;
 import com.romanov.rksp.museum.repository.ShowpieceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -76,12 +77,11 @@ public class HallServiceImpl implements HallService {
         // CONSTRAINT ON DELETE SET TO NULL
         // is added to the DB
         Set<Long> showpieces = processShowpieces(hall.getShowpieces());
-        if (erase) {
-            showpieceRepo.deleteAllById(showpieces);
-        } else {
+        if (!erase) {
             showpieceRepo.makeOrphan(showpieces);
+            hall.setShowpieces(null);
         }
-        hallRepo.deleteById(hall_id);
+        hallRepo.deleteById(hall.getId());
         return exh_id;
     }
 

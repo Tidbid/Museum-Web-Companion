@@ -6,6 +6,7 @@ import com.romanov.rksp.museum.repository.ExhibitRepo;
 import com.romanov.rksp.museum.repository.HallRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -87,16 +88,13 @@ public class ExhibitServiceImpl implements ExhibitService {
 
     @Override
     public void deleteExhibitAndProcessHalls(Long exh_id, Boolean erase) {
+        Exhibit exhibit = exhibitRepo.findExhibitById(exh_id);
         Set<Long> halls = processHalls(exhibitRepo.findExhibitById(exh_id).getHalls());
-        if (erase) {
-            hallRepo.deleteAllById(halls);
-        } else {
-            //TODO can be made more efficient by
-            // ADD CONSTRAINT ON DELETE SET NULL
-            // in the database
+        if (!erase) {
             hallRepo.makeOrphan(halls);
+            exhibit.setHalls(null);
         }
-        exhibitRepo.deleteById(exh_id);
+        exhibitRepo.deleteById(exhibit.getId());
     }
 
     @Override

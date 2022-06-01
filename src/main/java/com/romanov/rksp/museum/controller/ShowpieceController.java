@@ -81,7 +81,7 @@ public class ShowpieceController {
     @GetMapping("/edit/showpieces/delete")
     public String deleteShowpiece(@RequestParam Long shwp_id){
         Long hall_id = showpieceService.deleteShowpieceById(shwp_id);
-        String ret = "redirect:/museum/browse/halls/showpieces";
+        String ret = "redirect:/museum/edit/halls/showpieces";
         ret += (hall_id == null) ?
                 "" : "?hall_id=" + hall_id;
         //TODO delete images

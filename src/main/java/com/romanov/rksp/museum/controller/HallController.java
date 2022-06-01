@@ -89,13 +89,13 @@ public class HallController {
                 hallShowpiecesDto.getHall(),
                 hallShowpiecesDto.getShowpiecesToAdd()
         );
-        return "redirect:/museum/browse/halls/showpieces?hall_id=" + hall.getId().toString();
+        return "redirect:/museum/edit/halls/showpieces?hall_id=" + hall.getId().toString();
     }
 
     @GetMapping("/edit/halls/delete")
     public String deleteHall(@RequestParam Long hall_id, @RequestParam Boolean erase){
         Long exh_id = hallService.deleteHallAndProcessShowpieces(hall_id, erase);
-        String ret = "redirect:/museum/browse/exhibitions/halls";
+        String ret = "redirect:/museum/edit/exhibitions/halls";
         ret += (exh_id == null) ?
                 "" : "?exh_id=" + exh_id;
         return ret;

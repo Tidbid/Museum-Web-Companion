@@ -105,6 +105,6 @@ public class ExhibitionController {
     public String deleteExhibit(@RequestParam Long exh_id, @RequestParam Boolean erase){
         exhibitService.deleteExhibitAndProcessHalls(exh_id, erase);
         //TODO add image deletion
-        return "redirect:/museum/browse/exhibitions";
+        return "redirect:/museum/edit/exhibitions";
     }
 }
