@@ -87,8 +87,9 @@
                     <p class="fs-5">Следите за новостями! Вполне возможно, что очень скоро всё изменится. Будем рады вас видеть.</p>
                 </div>
             </div>
-            <div th:each="exhibition : ${active_exhibits}" class="carousel-item"
-            th:style="'background-image:url(' + ${exhibition.getImageUrl()} + ');'">
+            <div th:each="exhibition : ${active_exhibits}" class="carousel-item">
+                <div class="overlay-image" th:style="'background-image:url(' + ${exhibition.getImageUrl()} + ');'">
+                </div>
                 <div class="container container-carousel">
                     <h1 th:text="${exhibition.getName()}"></h1>
                     <p class="fs-5" th:text="${exhibition.getDescription()}"></p>

@@ -63,7 +63,7 @@ public class MuseumApplication {
 					LocalDate.now().plusYears(4),
 					"test",
 					"test_long",
-					"/img/exh/shoes.webp",
+					"/img/exh/1.jpg",
 					new ArrayList<>()
 			);
 			exhibitService.saveExhibit(exh);

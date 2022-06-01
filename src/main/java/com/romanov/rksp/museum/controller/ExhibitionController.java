@@ -62,7 +62,9 @@ public class ExhibitionController {
 
     //TODO html
     @GetMapping("/edit/exhibitions/halls")
-    public String viewHallsInEditMode(@RequestParam Long exh_id, Model model) {
+    public String viewHallsInEditMode(@RequestParam(required = false) Long exh_id, Model model) {
+        if (exh_id == null)
+            return "redirect:/museum/edit/halls/orphans";
         model.addAttribute("exhibit", exhibitService.findExhibitById(exh_id));
         return "halls_edit";
     }
@@ -74,7 +76,7 @@ public class ExhibitionController {
         model.addAttribute("exhibitHallsDto", new ExhibitHallsDto(exhibit, new ArrayList<>()));
         model.addAttribute("vacantHalls", hallService.findVacantHalls());
         model.addAttribute("head", "Создать");
-            return "modify_form_exh";
+        return "modify_form_exh";
     }
 
     @GetMapping("/edit/exhibitions/update")
@@ -99,7 +101,7 @@ public class ExhibitionController {
         String updatedUrl = imageService.saveExhibitionImage(exhibit, multipartFile);
         if (!exhibit.getImageUrl().equals(updatedUrl))
             exhibitService.updateImageById(exhibit.getId(), updatedUrl);
-        return "redirect:/museum/browse/exhibitions/halls?exh_id=" + exhibit.getId().toString();
+        return "redirect:/museum/edit/exhibitions";
     }
 
     @GetMapping("/edit/exhibitions/delete")

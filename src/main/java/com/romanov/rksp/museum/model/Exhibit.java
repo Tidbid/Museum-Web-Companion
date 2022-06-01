@@ -41,7 +41,7 @@ public class Exhibit implements Serializable {
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "exhibit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exhibit", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Collection<Hall> halls;
 
     //stub constructor, used for displaying orphans

@@ -1,10 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title th:text="${hall.getName()}"></title>
+</head>
+
+<body class="bg-light">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+        <a th:href="@{~/museum}" class="navbar-brand">Museum of Ancient Arts</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navmenu">
+            <ul class="navbar-nav ms-auto">
+                <li th:if="${hall.getId() != null}" class="nav-item">
+                    <a th:href="@{~/museum/edit/exhibitions/halls(exh_id=${(hall.getExhibit() == null) ? null : hall.getExhibit().getId()})}"
+                       class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-up-line" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <desc>Download more icon variants from https://tabler-icons.io/i/arrow-big-up-line</desc>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M9 12h-3.586a1 1 0 0 1 -.707 -1.707l6.586 -6.586a1 1 0 0 1 1.414 0l6.586 6.586a1 1 0 0 1 -.707 1.707h-3.586v6h-6v-6z" />
+                            <path d="M9 21h6" />
+                        </svg>
+                        Вернуться к залам
+                    </a>
+                </li>
+                <li th:if="${hall.getId() != null}" class="nav-item">
+                    <a th:href="@{~/museum/edit/showpieces/create(hall_id=${hall.getId()})}" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <desc>Download more icon variants from https://tabler-icons.io/i/link</desc>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+                            <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+                        </svg>
+                        Создать экспонат-ребенка
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{~/museum/edit/showpieces/create}" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="icon icon-tabler icon-tabler-circle-plus"
+                             width="24"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             stroke-width="2"
+                             stroke="currentColor"
+                             fill="none"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <line x1="9" y1="12" x2="15" y2="12"></line>
+                            <line x1="12" y1="9" x2="12" y2="15"></line>
+                        </svg>
+                        Создать экспонат-сироту
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section class="bg-light text-dark pt-3 text-center">
+    <div class="container">
+        <div class="text-center pt-1 mb-4">
+            <p th:if="${hall.getNumber() != null}" class="display-4">
+                Зал номер <span th:text="${hall.getNumber()}"></span>
+            </p>
+            <p class="display-4 mb-0" th:text="${hall.getName()}"></p>
+        </div>
+        <div class="container p-0">
+            <div class="row justify-content-center g-3">
+                <div th:each="showpiece:${hall.getShowpieces()}" class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow">
+                        <img th:src="${showpiece.getImageUrl()}"
+                             th:alt="'Фото экспоната: ' + ${showpiece.getName()}"
+                             class="card-img-top"/>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${showpiece.getName()}"></h5>
+                            <p class="card-text text-start" th:text="${showpiece.getDescription()}"></p>
+                            <div class = "d-flex row justify-content-evenly">
+                                <a th:href="@{~/museum/browse/showpieces/more(shwp_id=${showpiece.getId()})}"
+                                   class="btn btn-info col-2">
+                                    <img src="/img/icons/arrows-maximize.svg" alt="more">
+                                </a>
+                                <a th:href="@{~/museum/edit/showpieces/update(shwp_id=${showpiece.getId()})}"
+                                   class="btn btn-warning col-2"
+                                   type="button">
+                                    <img src="/img/icons/tools.svg" alt="edit">
+                                </a>
+                                <a class="btn btn-danger col-2"
+                                   type="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <img src="/img/icons/trash.svg" alt="delete">
+                                </a>
+                                <ul class="dropdown-menu w-50">
+                                    <li><a class="dropdown-item text-wrap"
+                                           th:href="@{~/museum/edit/showpieces/orphanize(shwp_id=${showpiece.getId()})}">
+                                        <img src="/img/icons/link_off.svg" alt="unlink"> Открепить
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-wrap"
+                                           th:href="@{~/museum/edit/showpieces/delete(shwp_id=${showpiece.getId()})}">
+                                        Удалить
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
 </html>

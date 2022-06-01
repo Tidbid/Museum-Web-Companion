@@ -26,7 +26,7 @@ public class Hall implements Serializable {
     @Column(name="description_long", length=15000)
     private String descriptionLong;
 
-    @OneToMany(mappedBy = "hall", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hall", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Collection<Showpiece> showpieces;
 
     @ManyToOne()

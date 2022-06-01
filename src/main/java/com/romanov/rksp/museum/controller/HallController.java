@@ -32,14 +32,16 @@ public class HallController {
 
     //TODO html
     @GetMapping("/edit/halls/showpieces")
-    public String viewShowpiecesInEditMode(@RequestParam Long hall_id, Model model) {
+    public String viewShowpiecesInEditMode(@RequestParam(required = false) Long hall_id, Model model) {
+        if (hall_id == null)
+            return "redirect:/museum/edit/showpieces/orphans";
         model.addAttribute("hall", hallService.findHallById(hall_id));
         return "showpieces_edit";
     }
 
     @GetMapping("/edit/halls/orphans")
     public String viewOrphanHalls(Model model) {
-        Exhibit stub = new Exhibit("Свободные Залы:", hallService.findVacantHalls());
+        Exhibit stub = new Exhibit("Свободные Залы", hallService.findVacantHalls());
         model.addAttribute("exhibit", stub);
         return "halls_edit";
     }
@@ -47,7 +49,7 @@ public class HallController {
     //TODO add information about exhibitions of halls into HTML
     @GetMapping("/edit/halls/all")
     public String viewAllHallsInEditMode(Model model) {
-        Exhibit stub = new Exhibit("Все Залы:", hallService.findAllHalls());
+        Exhibit stub = new Exhibit("Все Залы", hallService.findAllHalls());
         model.addAttribute("exhibit", stub);
         return "halls_edit";
     }
@@ -64,8 +66,13 @@ public class HallController {
     // allow manager to specify an exhibit
     // from this view
     @GetMapping("/edit/halls/create")
-    public String showNewHallForm(Model model) {
-        model.addAttribute("hallShowpiecesDto", new HallShowpiecesDto(new Hall(), new ArrayList<>()));
+    public String showNewHallForm(@RequestParam(required = false) Long exh_id, Model model) {
+        Hall hall = new Hall();
+        if (exh_id != null) {
+            hall.setExhibit(new Exhibit());
+            hall.getExhibit().setId(exh_id);
+        }
+        model.addAttribute("hallShowpiecesDto", new HallShowpiecesDto(hall, new ArrayList<>()));
         model.addAttribute("vacantShowpieces", showpieceService.findVacantShowpieces());
         model.addAttribute("head", "Создать");
         return "modify_form_hall";

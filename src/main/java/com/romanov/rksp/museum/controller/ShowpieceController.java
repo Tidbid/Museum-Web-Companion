@@ -1,5 +1,6 @@
 package com.romanov.rksp.museum.controller;
 
+import com.romanov.rksp.museum.model.Exhibit;
 import com.romanov.rksp.museum.model.Hall;
 import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.ImageService;
@@ -46,8 +47,13 @@ public class ShowpieceController {
     }
 
     @GetMapping("/edit/showpieces/create")
-    public String showNewShowpieceForm(Model model) {
-        model.addAttribute("showpiece", new Showpiece());
+    public String showNewShowpieceForm(@RequestParam(required = false) Long hall_id, Model model) {
+        Showpiece showpiece = new Showpiece();
+        if (hall_id != null) {
+            showpiece.setHall(new Hall());
+            showpiece.getHall().setId(hall_id);
+        }
+        model.addAttribute("showpiece", showpiece);
         model.addAttribute("head", "Создать");
         return "modify_form_shwp";
     }
