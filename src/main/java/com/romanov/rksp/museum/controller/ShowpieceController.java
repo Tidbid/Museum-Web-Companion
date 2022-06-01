@@ -66,7 +66,6 @@ public class ShowpieceController {
         return "modify_form_shwp";
     }
 
-    //TODO check for any null fields if updated
     @PostMapping("/edit/showpieces/save")
     public String saveShowpiece(
             @ModelAttribute("showpiece") Showpiece showpiece,
@@ -89,10 +88,9 @@ public class ShowpieceController {
         return ret;
     }
 
-    //TODO add this to edit html as a button
     @GetMapping("/edit/showpieces/orphanize")
-    public ResponseEntity<?> orphanizeShowpiece(@RequestParam Long shwp_id){
+    public String orphanizeShowpiece(@RequestParam Long shwp_id, @RequestParam Long hall_id){
           showpieceService.makeOrphan(shwp_id);
-          return ResponseEntity.ok().build();
+          return "redirect:/museum/edit/halls/showpieces?hall_id=" + hall_id;
     }
 }

@@ -50,7 +50,7 @@
             <div class = "d-flex flex-column align-items-center custom-file mb-3">
                 <label class="form-label mb-0 p-2 fw-bold">Фоновое изображение: </label>
                 <img th:if="${exhibitHallsDto.getExhibit().getImageUrl() != null}"
-                     class="p-2"
+                     class="img-thumbnail"
                      th:src="${exhibitHallsDto.getExhibit().getImageUrl()}"
                      alt="background image"/>
                 <div class="col-4 p-2">
@@ -102,7 +102,7 @@
             </table>
             <div class="container row justify-content-center">
                 <button type="submit" class="btn btn-success btn-lg col-2 m-2">Сохранить</button>
-                <a th:href="@{~/museum/browse/exhibitions}" class="btn btn-danger btn-lg col-2 m-2">Отменить</a>
+                <a th:href="@{~/museum/edit/exhibitions}" class="btn btn-danger btn-lg col-2 m-2">Отменить</a>
             </div>
         </form>
     </div>

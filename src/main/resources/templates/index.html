@@ -50,6 +50,10 @@
                        th:href="@{~/museum/browse/exhibitions}"
                        class="nav-link">Экспозиции</a>
                 </li>
+                <li class="nav-item" sec:authorize-url="/museum/security/admin/**">
+                    <a th:href="@{~/museum/security/admin/all}"
+                       class="nav-link">Управление Пользователями</a>
+                </li>
                 <li class="nav-item" sec:authorize-url="/museum/edit/exhibitions">
                     <a th:href="@{~/museum/edit/exhibitions}"
                        class="nav-link">Режим Правки</a>

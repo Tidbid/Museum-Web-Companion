@@ -24,15 +24,13 @@ public class ExhibitionController {
 
     @GetMapping("/browse/exhibitions")
     public String viewExhibitions(Model model) {
-        //TODO display only ongoing exhibitions
-        // or separate them into two parts:
+        //TODO mb separate into
         // ongoing and closed
         Collection<Exhibit> exhibitionsList = exhibitService.findAllActiveExhibits();
         model.addAttribute("exhibitions", exhibitionsList);
         return "all_exh";
     }
 
-    //TODO html
     @GetMapping("edit/exhibitions")
     public String viewExhibitionsInEditMode(Model model) {
         Collection<Exhibit> exhibitionsList = exhibitService.findAllExhibits();
@@ -60,7 +58,6 @@ public class ExhibitionController {
         return "halls";
     }
 
-    //TODO html
     @GetMapping("/edit/exhibitions/halls")
     public String viewHallsInEditMode(@RequestParam(required = false) Long exh_id, Model model) {
         if (exh_id == null)

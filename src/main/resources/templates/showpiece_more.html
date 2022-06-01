@@ -35,7 +35,10 @@
 <section class="pt-3">
     <div class="container text-center">
         <h1 class="display-4" th:text="${showpiece.getName()}"></h1>
-        <a th:href="${showpiece.getImageUrl()}"><img class="img-fluid" th:src="${showpiece.getImageUrl()}"></a>
+        <a th:href="${showpiece.getImageUrl()}">
+            <img class="img-fluid"
+                 th:src="${showpiece.getImageUrl()}">
+        </a>
         <h3>Описание:</h3>
         <p class="lead text-start" th:text="${showpiece.getDescriptionLong()}"></p>
     </div>

@@ -70,7 +70,7 @@
             <div class = "d-flex flex-column align-items-center custom-file mb-3">
                 <label class="form-label mb-0 p-2 fw-bold">Фотография экспоната: </label>
                 <img th:if="${showpiece.getImageUrl() != null}"
-                     class="p-2"
+                     class="img-thumbnail"
                      th:src="${showpiece.getImageUrl()}"
                      alt="showpiece photo"/>
                 <div class="col-4 p-2">
@@ -82,7 +82,7 @@
             </div>
             <div class="container row justify-content-center">
                 <button type="submit" class="btn btn-success btn-lg col-2 m-2">Сохранить</button>
-                <a th:href="@{~/museum/exhibitions}" class="btn btn-danger btn-lg col-2 m-2">Отменить</a>
+                <a th:href="@{~/museum}" class="btn btn-danger btn-lg col-2 m-2">Отменить</a>
             </div>
         </form>
     </div>

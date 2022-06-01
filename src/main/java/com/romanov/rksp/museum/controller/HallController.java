@@ -30,7 +30,6 @@ public class HallController {
         return "showpieces";
     }
 
-    //TODO html
     @GetMapping("/edit/halls/showpieces")
     public String viewShowpiecesInEditMode(@RequestParam(required = false) Long hall_id, Model model) {
         if (hall_id == null)
@@ -54,17 +53,13 @@ public class HallController {
         return "halls_edit";
     }
 
-    //TODO add this to edit html as a button
-    // maybe it won't refresh the page?
+    //TODO maybe it won't refresh the page?
     @GetMapping("/edit/halls/orphanize")
-    public ResponseEntity<?> orphanizeHall(@RequestParam Long hall_id){
+    public String orphanizeHall(@RequestParam Long hall_id, @RequestParam Long exh_id){
         hallService.makeOrphan(hall_id);
-        return ResponseEntity.ok().build();
+        return "redirect:/museum/edit/exhibitions/halls?exh_id=" + exh_id;
     }
 
-    //TODO add field that will
-    // allow manager to specify an exhibit
-    // from this view
     @GetMapping("/edit/halls/create")
     public String showNewHallForm(@RequestParam(required = false) Long exh_id, Model model) {
         Hall hall = new Hall();

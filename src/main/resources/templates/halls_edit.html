@@ -17,6 +17,29 @@
         <div class="collapse navbar-collapse" id="navmenu">
             <ul class="navbar-nav ms-auto">
                 <li th:if="${exhibit.getId() != null}" class="nav-item">
+                    <a th:href="@{~/museum/browse/exhibitions/halls(exh_id=${exhibit.getId()})}"
+                       class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <desc>Download more icon variants from https://tabler-icons.io/i/eye</desc>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" />
+                        </svg>
+                        Режим Просмотра</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{~/museum/edit/exhibitions}"
+                       class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-up-line" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <desc>Download more icon variants from https://tabler-icons.io/i/arrow-big-up-line</desc>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M9 12h-3.586a1 1 0 0 1 -.707 -1.707l6.586 -6.586a1 1 0 0 1 1.414 0l6.586 6.586a1 1 0 0 1 -.707 1.707h-3.586v6h-6v-6z" />
+                            <path d="M9 21h6" />
+                        </svg>
+                        Вернуться к экспозициям
+                    </a>
+                </li>
+                <li th:if="${exhibit.getId() != null}" class="nav-item">
                     <a th:href="@{~/museum/edit/halls/create(exh_id=${exhibit.getId()})}" class="nav-link">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <desc>Download more icon variants from https://tabler-icons.io/i/link</desc>
@@ -91,11 +114,11 @@
                                     <img src="/img/icons/trash.svg" alt="delete">
                                 </a>
                                 <ul class="dropdown-menu w-50">
-                                    <li><a class="dropdown-item text-wrap"
-                                           th:href="@{~/museum/edit/halls/orphanize(hall_id=${hall.getId()})}">
+                                    <li th:if="${exhibit.getId() != null}"><a class="dropdown-item text-wrap"
+                                           th:href="@{~/museum/edit/halls/orphanize(hall_id=${hall.getId()}, exh_id=${exhibit.getId()})}">
                                         <img src="/img/icons/link_off.svg" alt="unlink"> Открепить
                                     </a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li th:if="${exhibit.getId() != null}"><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item text-wrap"
                                            th:href="@{~/museum/edit/halls/delete(hall_id=${hall.getId()}, erase=${false})}">
                                         Оставить детей

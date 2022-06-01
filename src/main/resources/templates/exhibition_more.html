@@ -35,17 +35,27 @@
 <section class="pt-2">
     <div class="container text-center">
         <h1 class="display-4" th:text="${exhibit.getName()}"></h1>
-        <a th:href="${exhibit.getImageUrl()}"><img class="img-fluid" th:src="${exhibit.getImageUrl()}"></a>
-        <h3 class="text-center fs-4 mb-2">
-            Проходит с <span class="text-primary"
-                             th:text="${start}"></span> и до  <span class="text-primary"
-                                                                    th:text="${finish}"></span>!
-        </h3>
-        <hr>
-        <h3 class="display-6">Описание:</h3>
-        <p class="lead text-start fs-4" th:text="${exhibit.getDescriptionLong()}"></p>
-        <a th:href="@{~/museum/browse/exhibitions/halls(exh_id=${exhibit.getId()})}"
-           class="btn btn-primary align-self-center my-4 col-3">Перейти к залам</a>
+        <div class="d-flex row justify-content-center align-items-center g-3">
+            <a th:href="${exhibit.getImageUrl()}"
+            class="col-12 col-lg-8">
+                <img class="img-thumbnail my-4"
+                     th:src="${exhibit.getImageUrl()}">
+            </a>
+            <div class="col-6 col-lg-4 text-start mb-4">
+                <h3 class="display-6 fs-2">Время проведения:</h3>
+                <h3 class="display-6 fs-3 fw-bold">
+                    <span th:text="${start}"></span>
+                    <img src="/img/icons/minus.svg" alt="stick">
+                    <span th:text="${finish}"></span>
+                </h3>
+            </div>
+            <a th:href="@{~/museum/browse/exhibitions/halls(exh_id=${exhibit.getId()})}"
+               class="btn btn-primary btn-lg my-4 col-4 col-md-3">Перейти к залам</a>
+            <div class="col-12">
+                <h3 class="display-6">Описание:</h3>
+                <p class="lead text-start fs-4" th:text="${exhibit.getDescriptionLong()}"></p>
+            </div>
+        </div>
     </div>
 </section>
 <hr>
