@@ -24,8 +24,6 @@ public class ExhibitionController {
 
     @GetMapping("/browse/exhibitions")
     public String viewExhibitions(Model model) {
-        //TODO mb separate into
-        // ongoing and closed
         Collection<Exhibit> exhibitionsList = exhibitService.findAllActiveExhibits();
         model.addAttribute("exhibitions", exhibitionsList);
         return "all_exh";

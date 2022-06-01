@@ -7,7 +7,6 @@ import com.romanov.rksp.museum.model.Showpiece;
 import com.romanov.rksp.museum.service.HallService;
 import com.romanov.rksp.museum.service.ShowpieceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +44,7 @@ public class HallController {
         return "halls_edit";
     }
 
-    //TODO add information about exhibitions of halls into HTML
+    //TODO add information about exhibitions
     @GetMapping("/edit/halls/all")
     public String viewAllHallsInEditMode(Model model) {
         Exhibit stub = new Exhibit("Все Залы", hallService.findAllHalls());
@@ -53,7 +52,6 @@ public class HallController {
         return "halls_edit";
     }
 
-    //TODO maybe it won't refresh the page?
     @GetMapping("/edit/halls/orphanize")
     public String orphanizeHall(@RequestParam Long hall_id, @RequestParam Long exh_id){
         hallService.makeOrphan(hall_id);

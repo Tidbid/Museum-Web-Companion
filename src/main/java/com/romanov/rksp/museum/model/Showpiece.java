@@ -1,6 +1,5 @@
 package com.romanov.rksp.museum.model;
 
-import com.sun.xml.bind.v2.TODO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
